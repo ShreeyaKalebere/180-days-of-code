@@ -1,0 +1,32 @@
+name: C++ Solution Checker
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  check-cpp:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install GCC
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++
+
+      - name: Compile Day 1 solution
+        run: |
+          g++ -std=c++17 -Wall -Wextra \
+            daily/day-001/solution.cpp \
+            -o solution
+
+      - name: Run Day 1 solution
+        run: ./solution
