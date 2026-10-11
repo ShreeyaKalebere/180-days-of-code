@@ -5,14 +5,11 @@ on:
   push:
     branches:
       - main
-
   pull_request:
     branches:
       - main
-
   schedule:
     - cron: "30 3 * * *"
-
   workflow_dispatch:
 
 permissions:
@@ -28,40 +25,22 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create today's challenge
+      - name: Create daily files
+        shell: bash
         run: |
           DAY=$(date -u +%j)
           DAY=$(( (DAY - 1) % 180 + 1 ))
           FOLDER=$(printf "daily/day-%03d" "$DAY")
 
           if [ -d "$FOLDER" ]; then
-            echo "$FOLDER already exists. Nothing to create."
+            echo "Folder $FOLDER already exists."
             exit 0
           fi
 
           mkdir -p "$FOLDER"
 
-          cat > "$FOLDER/README.md" <<EOF
-          # Day $DAY: C++ and DSA Challenge
-
-          ## Objective
-          Practice C++ and Data Structures and Algorithms.
-
-          ## Problem Statement
-          Add today's problem statement here.
-
-          ## Approach
-          Explain your approach here.
-
-          ## Complexity
-          - Time: To be analyzed.
-          - Space: To be analyzed.
-
-          ## Key Learnings
-          Record what you learned today.
-          EOF
+          printf '# Day %s: C++ and DSA\n\n## Problem Statement\nWrite the problem here.\n\n## Approach\nExplain your approach here.\n\n## Complexity\n- Time: TBD\n- Space: TBD\n' "$DAY" > "$FOLDER/README.md"
 
           cat > "$FOLDER/solution.cpp" <<'EOF'
           #include <iostream>
@@ -73,18 +52,19 @@ jobs:
           }
           EOF
 
-      - name: Commit and push new challenge
+      - name: Commit and push daily files
+        shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add daily/
 
-          if git diff --cached --quiet; then
-            echo "No new challenge to commit."
-          else
+          if ! git diff --cached --quiet; then
             git commit -m "Add daily C++ challenge"
             git push origin HEAD:main
+          else
+            echo "No new files to commit."
           fi
 
   check-cpp:
@@ -102,9 +82,7 @@ jobs:
 
       - name: Compile Day 1 solution
         run: |
-          g++ -std=c++17 -Wall -Wextra \
-            daily/day-001/solution.cpp \
-            -o solution
+          g++ -std=c++17 -Wall -Wextra daily/day-001/solution.cpp -o solution
 
       - name: Run Day 1 solution
         run: ./solution
