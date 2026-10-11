@@ -1,16 +1,94 @@
-name: C++ Solution Checker
+```yaml
+name: Daily C++ Challenge
 
 on:
   push:
     branches:
       - main
+
   pull_request:
     branches:
       - main
+
+  schedule:
+    - cron: "30 3 * * *"
+
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
+  create-daily-challenge:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create today's challenge
+        run: |
+          DAY=$(date -u +%j)
+          DAY=$(( (DAY - 1) % 180 + 1 ))
+          FOLDER=$(printf "daily/day-%03d" "$DAY")
+
+          if [ -d "$FOLDER" ]; then
+            echo "$FOLDER already exists. Nothing to create."
+            exit 0
+          fi
+
+          mkdir -p "$FOLDER"
+
+          cat > "$FOLDER/README.md" <<EOF
+          # Day $DAY: C++ and DSA Challenge
+
+          ## Objective
+          Practice C++ and Data Structures and Algorithms.
+
+          ## Problem Statement
+          Add today's problem statement here.
+
+          ## Approach
+          Explain your approach here.
+
+          ## Complexity
+          - Time: To be analyzed.
+          - Space: To be analyzed.
+
+          ## Key Learnings
+          Record what you learned today.
+          EOF
+
+          cat > "$FOLDER/solution.cpp" <<'EOF'
+          #include <iostream>
+          using namespace std;
+
+          int main() {
+              // Write your solution here.
+              return 0;
+          }
+          EOF
+
+      - name: Commit and push new challenge
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add daily/
+
+          if git diff --cached --quiet; then
+            echo "No new challenge to commit."
+          else
+            git commit -m "Add daily C++ challenge"
+            git push origin HEAD:main
+          fi
+
   check-cpp:
+    if: github.event_name != 'schedule' && github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
 
     steps:
@@ -30,3 +108,4 @@ jobs:
 
       - name: Run Day 1 solution
         run: ./solution
+```
