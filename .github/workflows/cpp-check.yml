@@ -1,4 +1,4 @@
-```yaml
+
 name: Daily C++ Challenge
 
 on:
@@ -86,4 +86,3 @@ jobs:
 
       - name: Run Day 1 solution
         run: ./solution
-```
