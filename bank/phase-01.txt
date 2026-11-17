@@ -1,0 +1,465 @@
+=== DAY 1 | Hello World
+--- statement
+Print exactly `Hello, World!` to the screen.
+
+**Input:** none.
+**Output:** the line `Hello, World!`
+--- input
+--- output
+Hello, World!
+--- complexity
+Time: O(1) | Space: O(1)
+--- code
+#include <iostream>
+using namespace std;
+
+int main() {
+    cout << "Hello, World!" << endl;
+    return 0;
+}
+
+=== DAY 2 | Sum and Average
+--- statement
+Read two integers `a` and `b`. Print their sum on the first line and their average (with exactly 2 decimal places) on the second line.
+
+**Input:** two integers `a b`.
+**Output:** sum, then average.
+--- input
+7 4
+--- output
+11
+5.50
+--- complexity
+Time: O(1) | Space: O(1)
+--- code
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int main() {
+    long long a, b;
+    cin >> a >> b;
+    long long sum = a + b;
+    double avg = sum / 2.0;
+    cout << sum << "\n";
+    cout << fixed << setprecision(2) << avg << "\n";
+    return 0;
+}
+
+=== DAY 3 | Greeting with Input and Output
+--- statement
+Read a person's first name (one word) and their age. Print `Hello <name>, you are <age> years old.`
+
+**Input:** a word and an integer.
+**Output:** the greeting line.
+--- input
+Shreeya 20
+--- output
+Hello Shreeya, you are 20 years old.
+--- complexity
+Time: O(1) | Space: O(1)
+--- code
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string name;
+    int age;
+    cin >> name >> age;
+    cout << "Hello " << name << ", you are " << age << " years old." << endl;
+    return 0;
+}
+
+=== DAY 4 | Arithmetic Operators
+--- statement
+Read two positive integers `a` and `b`. Print `a+b`, `a-b`, `a*b`, `a/b` (integer division) and `a%b`, each on its own line.
+
+**Input:** two integers `a b` (b > 0).
+**Output:** five lines.
+--- input
+17 5
+--- output
+22
+12
+85
+3
+2
+--- complexity
+Time: O(1) | Space: O(1)
+--- code
+#include <iostream>
+using namespace std;
+
+int main() {
+    long long a, b;
+    cin >> a >> b;
+    cout << a + b << "\n";
+    cout << a - b << "\n";
+    cout << a * b << "\n";
+    cout << a / b << "\n";
+    cout << a % b << "\n";
+    return 0;
+}
+
+=== DAY 5 | Grade Calculator
+--- statement
+Read marks out of 100 and print the grade:
+- 90 and above: `A`
+- 75 to 89: `B`
+- 60 to 74: `C`
+- 40 to 59: `D`
+- below 40: `F`
+
+**Input:** an integer `marks`.
+**Output:** a single letter.
+--- input
+82
+--- output
+B
+--- complexity
+Time: O(1) | Space: O(1)
+--- code
+#include <iostream>
+using namespace std;
+
+int main() {
+    int marks;
+    cin >> marks;
+    if (marks >= 90) cout << "A";
+    else if (marks >= 75) cout << "B";
+    else if (marks >= 60) cout << "C";
+    else if (marks >= 40) cout << "D";
+    else cout << "F";
+    cout << endl;
+    return 0;
+}
+
+=== DAY 6 | Sum of First N Numbers
+--- statement
+Read `n` and print the sum `1 + 2 + ... + n` using a loop.
+
+**Input:** an integer `n` (1 ≤ n ≤ 10^6).
+**Output:** the sum.
+--- input
+10
+--- output
+55
+--- complexity
+Time: O(n) | Space: O(1)
+--- code
+#include <iostream>
+using namespace std;
+
+int main() {
+    long long n, sum = 0;
+    cin >> n;
+    for (long long i = 1; i <= n; i++) {
+        sum += i;
+    }
+    cout << sum << endl;
+    return 0;
+}
+
+=== DAY 7 | Star Triangle Pattern
+--- statement
+Read `n` and print a right-angled triangle of stars with `n` rows. Row `i` has `i` stars separated by spaces.
+
+**Input:** an integer `n`.
+**Output:** `n` lines.
+--- input
+4
+--- output
+*
+* *
+* * *
+* * * *
+--- complexity
+Time: O(n^2) | Space: O(1)
+--- code
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= i; j++) {
+            if (j > 1) cout << " ";
+            cout << "*";
+        }
+        cout << "\n";
+    }
+    return 0;
+}
+
+=== DAY 8 | Maximum of Three Using a Function
+--- statement
+Write a function `maxOfThree(a, b, c)` that returns the largest of three integers. Read three integers and print the result.
+
+**Input:** three integers.
+**Output:** the maximum.
+--- input
+12 45 7
+--- output
+45
+--- complexity
+Time: O(1) | Space: O(1)
+--- code
+#include <iostream>
+using namespace std;
+
+int maxOfThree(int a, int b, int c) {
+    int best = a;
+    if (b > best) best = b;
+    if (c > best) best = c;
+    return best;
+}
+
+int main() {
+    int a, b, c;
+    cin >> a >> b >> c;
+    cout << maxOfThree(a, b, c) << endl;
+    return 0;
+}
+
+=== DAY 9 | Power Function
+--- statement
+Write a function `power(base, exp)` that returns `base^exp` using a loop (no `pow`). Read `base` and `exp` and print the answer.
+
+**Input:** two integers `base exp` (0 ≤ exp ≤ 30).
+**Output:** `base^exp`.
+--- input
+3 5
+--- output
+243
+--- complexity
+Time: O(exp) | Space: O(1)
+--- code
+#include <iostream>
+using namespace std;
+
+long long power(long long base, int exp) {
+    long long result = 1;
+    for (int i = 0; i < exp; i++) {
+        result *= base;
+    }
+    return result;
+}
+
+int main() {
+    long long base;
+    int exp;
+    cin >> base >> exp;
+    cout << power(base, exp) << endl;
+    return 0;
+}
+
+=== DAY 10 | Largest and Smallest in an Array
+--- statement
+Read `n` integers into an array and print the largest and the smallest.
+
+**Input:** `n`, then `n` integers.
+**Output:** `max min` on one line.
+--- input
+6
+4 9 -2 15 0 7
+--- output
+15 -2
+--- complexity
+Time: O(n) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (int i = 0; i < n; i++) cin >> a[i];
+
+    int mx = a[0], mn = a[0];
+    for (int i = 1; i < n; i++) {
+        if (a[i] > mx) mx = a[i];
+        if (a[i] < mn) mn = a[i];
+    }
+    cout << mx << " " << mn << endl;
+    return 0;
+}
+
+=== DAY 11 | Count Vowels in a String
+--- statement
+Read a line of text and count how many vowels (`a e i o u`, upper or lower case) it contains.
+
+**Input:** one line of text.
+**Output:** the number of vowels.
+--- input
+Hello GitHub World
+--- output
+5
+--- complexity
+Time: O(n) | Space: O(1)
+--- code
+#include <iostream>
+#include <string>
+#include <cctype>
+using namespace std;
+
+int main() {
+    string s;
+    getline(cin, s);
+    int count = 0;
+    for (char ch : s) {
+        char c = tolower(static_cast<unsigned char>(ch));
+        if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') count++;
+    }
+    cout << count << endl;
+    return 0;
+}
+
+=== DAY 12 | Reverse an Array Using Pointers
+--- statement
+Read `n` integers and reverse the array in place using two pointers (`int*`), then print it.
+
+**Input:** `n`, then `n` integers.
+**Output:** the reversed array.
+--- input
+5
+1 2 3 4 5
+--- output
+5 4 3 2 1
+--- complexity
+Time: O(n) | Space: O(1) extra
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void swapValues(int& x, int& y) {
+    int t = x;
+    x = y;
+    y = t;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (int i = 0; i < n; i++) cin >> a[i];
+
+    int* left = a.data();
+    int* right = a.data() + n - 1;
+    while (left < right) {
+        swapValues(*left, *right);
+        left++;
+        right--;
+    }
+
+    for (int i = 0; i < n; i++) cout << a[i] << (i + 1 < n ? " " : "\n");
+    return 0;
+}
+
+=== DAY 13 | Factorial Using Recursion
+--- statement
+Write a recursive function to compute `n!`. Read `n` and print `n!`.
+
+**Input:** an integer `n` (0 ≤ n ≤ 20).
+**Output:** `n!`.
+--- input
+6
+--- output
+720
+--- complexity
+Time: O(n) | Space: O(n) recursion stack
+--- code
+#include <iostream>
+using namespace std;
+
+long long factorial(int n) {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    cout << factorial(n) << endl;
+    return 0;
+}
+
+=== DAY 14 | Count and Sum of Digits
+--- statement
+Read a non-negative integer and print how many digits it has and the sum of its digits. Notice this takes O(log n) time, not O(n).
+
+**Input:** an integer `n`.
+**Output:** `digits sum` on one line.
+--- input
+90471
+--- output
+5 21
+--- complexity
+Time: O(log10 n) | Space: O(1)
+--- code
+#include <iostream>
+using namespace std;
+
+int main() {
+    long long n;
+    cin >> n;
+    if (n == 0) {
+        cout << "1 0" << endl;
+        return 0;
+    }
+    int digits = 0;
+    long long sum = 0;
+    while (n > 0) {
+        sum += n % 10;
+        n /= 10;
+        digits++;
+    }
+    cout << digits << " " << sum << endl;
+    return 0;
+}
+
+=== DAY 15 | FizzBuzz (Revision)
+--- statement
+Print numbers from 1 to `n`. For multiples of 3 print `Fizz`, for multiples of 5 print `Buzz`, and for multiples of both print `FizzBuzz`.
+
+**Input:** an integer `n`.
+**Output:** `n` lines.
+--- input
+15
+--- output
+1
+2
+Fizz
+4
+Buzz
+Fizz
+7
+8
+Fizz
+Buzz
+11
+Fizz
+13
+14
+FizzBuzz
+--- complexity
+Time: O(n) | Space: O(1)
+--- code
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    for (int i = 1; i <= n; i++) {
+        if (i % 15 == 0) cout << "FizzBuzz\n";
+        else if (i % 3 == 0) cout << "Fizz\n";
+        else if (i % 5 == 0) cout << "Buzz\n";
+        else cout << i << "\n";
+    }
+    return 0;
+}

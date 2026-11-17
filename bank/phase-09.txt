@@ -1,0 +1,795 @@
+=== DAY 146 | Graph Representation (Adjacency List)
+--- statement
+Graphs in this phase use vertices `0..n-1`. Read an undirected graph and print each vertex's neighbours in ascending order as `v: a b c`.
+
+**Input:** `n m`, then `m` edges `u v`.
+**Output:** `n` lines.
+--- input
+4 4
+0 1
+0 2
+1 2
+2 3
+--- output
+0: 1 2
+1: 0 2
+2: 0 1 3
+3: 2
+--- complexity
+Time: O(V + E log E) | Space: O(V + E)
+--- code
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<vector<int>> adj(n);
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    for (int v = 0; v < n; v++) {
+        sort(adj[v].begin(), adj[v].end());
+        cout << v << ":";
+        for (int u : adj[v]) cout << " " << u;
+        cout << "\n";
+    }
+    return 0;
+}
+
+=== DAY 147 | Breadth-First Search
+--- statement
+Print the BFS order of an undirected graph starting from vertex 0, visiting neighbours in ascending order.
+
+**Input:** `n m`, then `m` edges.
+**Output:** the BFS order.
+--- input
+6 6
+0 1
+0 2
+1 3
+2 4
+3 5
+4 5
+--- output
+0 1 2 3 4 5
+--- complexity
+Time: O(V + E) | Space: O(V)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<vector<int>> adj(n);
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    for (auto& list : adj) sort(list.begin(), list.end());
+
+    vector<bool> seen(n, false);
+    vector<int> order;
+    queue<int> q;
+    q.push(0);
+    seen[0] = true;
+    while (!q.empty()) {
+        int v = q.front();
+        q.pop();
+        order.push_back(v);
+        for (int u : adj[v]) {
+            if (!seen[u]) {
+                seen[u] = true;
+                q.push(u);
+            }
+        }
+    }
+    for (size_t i = 0; i < order.size(); i++) cout << order[i] << (i + 1 < order.size() ? " " : "\n");
+    return 0;
+}
+
+=== DAY 148 | Depth-First Search
+--- statement
+Print the recursive DFS order of an undirected graph from vertex 0, visiting neighbours in ascending order.
+
+**Input:** `n m`, then `m` edges.
+**Output:** the DFS order.
+--- input
+6 6
+0 1
+0 2
+1 3
+2 4
+3 5
+4 5
+--- output
+0 1 3 5 4 2
+--- complexity
+Time: O(V + E) | Space: O(V)
+--- code
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+vector<vector<int>> adj;
+vector<bool> seen;
+vector<int> order;
+
+void dfs(int v) {
+    seen[v] = true;
+    order.push_back(v);
+    for (int u : adj[v])
+        if (!seen[u]) dfs(u);
+}
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    adj.assign(n, {});
+    seen.assign(n, false);
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    for (auto& list : adj) sort(list.begin(), list.end());
+    dfs(0);
+    for (size_t i = 0; i < order.size(); i++) cout << order[i] << (i + 1 < order.size() ? " " : "\n");
+    return 0;
+}
+
+=== DAY 149 | Count Connected Components
+--- statement
+Count the connected components of an undirected graph.
+
+**Input:** `n m`, then `m` edges.
+**Output:** the number of components.
+--- input
+6 3
+0 1
+1 2
+3 4
+--- output
+3
+--- complexity
+Time: O(V + E) | Space: O(V)
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<vector<int>> adj;
+vector<bool> seen;
+
+void dfs(int v) {
+    seen[v] = true;
+    for (int u : adj[v])
+        if (!seen[u]) dfs(u);
+}
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    adj.assign(n, {});
+    seen.assign(n, false);
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    int components = 0;
+    for (int v = 0; v < n; v++) {
+        if (!seen[v]) {
+            components++;
+            dfs(v);
+        }
+    }
+    cout << components << endl;
+    return 0;
+}
+
+=== DAY 150 | Number of Islands
+--- statement
+Count islands in a grid of `1` (land) and `0` (water). Land cells connect horizontally and vertically.
+
+**Input:** `r c`, then `r` strings of length `c`.
+**Output:** the number of islands.
+--- input
+4 5
+11000
+11000
+00100
+00011
+--- output
+3
+--- complexity
+Time: O(r * c) | Space: O(r * c)
+--- code
+#include <iostream>
+#include <vector>
+#include <string>
+#include <queue>
+using namespace std;
+
+int main() {
+    int r, c;
+    cin >> r >> c;
+    vector<string> g(r);
+    for (auto& row : g) cin >> row;
+    const int dr[4] = {1, -1, 0, 0}, dc[4] = {0, 0, 1, -1};
+    int islands = 0;
+    for (int i = 0; i < r; i++) {
+        for (int j = 0; j < c; j++) {
+            if (g[i][j] != '1') continue;
+            islands++;
+            queue<pair<int, int>> q;
+            q.push({i, j});
+            g[i][j] = '0';
+            while (!q.empty()) {
+                auto [x, y] = q.front();
+                q.pop();
+                for (int k = 0; k < 4; k++) {
+                    int nx = x + dr[k], ny = y + dc[k];
+                    if (nx >= 0 && ny >= 0 && nx < r && ny < c && g[nx][ny] == '1') {
+                        g[nx][ny] = '0';
+                        q.push({nx, ny});
+                    }
+                }
+            }
+        }
+    }
+    cout << islands << endl;
+    return 0;
+}
+
+=== DAY 151 | Cycle Detection in an Undirected Graph
+--- statement
+Detect whether an undirected graph contains a cycle using DFS with a parent check. Print `true` or `false`.
+
+**Input:** `n m`, then `m` edges.
+**Output:** `true` or `false`.
+--- input
+5 5
+0 1
+1 2
+2 3
+3 1
+3 4
+--- output
+true
+--- complexity
+Time: O(V + E) | Space: O(V)
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<vector<int>> adj;
+vector<bool> seen;
+
+bool hasCycle(int v, int parent) {
+    seen[v] = true;
+    for (int u : adj[v]) {
+        if (!seen[u]) {
+            if (hasCycle(u, v)) return true;
+        } else if (u != parent) {
+            return true;
+        }
+    }
+    return false;
+}
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    adj.assign(n, {});
+    seen.assign(n, false);
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    bool cycle = false;
+    for (int v = 0; v < n && !cycle; v++)
+        if (!seen[v] && hasCycle(v, -1)) cycle = true;
+    cout << (cycle ? "true" : "false") << endl;
+    return 0;
+}
+
+=== DAY 152 | Cycle Detection in a Directed Graph
+--- statement
+Detect a cycle in a directed graph using DFS with three colours (unvisited, in progress, done). Print `true` or `false`.
+
+**Input:** `n m`, then `m` directed edges `u -> v`.
+**Output:** `true` or `false`.
+--- input
+4 4
+0 1
+1 2
+2 3
+3 1
+--- output
+true
+--- complexity
+Time: O(V + E) | Space: O(V)
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<vector<int>> adj;
+vector<int> state;  // 0 = unvisited, 1 = in progress, 2 = done
+
+bool dfs(int v) {
+    state[v] = 1;
+    for (int u : adj[v]) {
+        if (state[u] == 1) return true;
+        if (state[u] == 0 && dfs(u)) return true;
+    }
+    state[v] = 2;
+    return false;
+}
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    adj.assign(n, {});
+    state.assign(n, 0);
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+    }
+    bool cycle = false;
+    for (int v = 0; v < n && !cycle; v++)
+        if (state[v] == 0 && dfs(v)) cycle = true;
+    cout << (cycle ? "true" : "false") << endl;
+    return 0;
+}
+
+=== DAY 153 | Topological Sort (Kahn's Algorithm)
+--- statement
+Print a topological order of a DAG using Kahn's algorithm. When several vertices are available, pick the smallest first.
+
+**Input:** `n m`, then `m` directed edges.
+**Output:** the order.
+--- input
+6 6
+5 2
+5 0
+4 0
+4 1
+2 3
+3 1
+--- output
+4 5 0 2 3 1
+--- complexity
+Time: O((V + E) log V) | Space: O(V + E)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <functional>
+using namespace std;
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<vector<int>> adj(n);
+    vector<int> indeg(n, 0);
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        indeg[v]++;
+    }
+    priority_queue<int, vector<int>, greater<int>> ready;
+    for (int v = 0; v < n; v++)
+        if (indeg[v] == 0) ready.push(v);
+
+    vector<int> order;
+    while (!ready.empty()) {
+        int v = ready.top();
+        ready.pop();
+        order.push_back(v);
+        for (int u : adj[v])
+            if (--indeg[u] == 0) ready.push(u);
+    }
+    for (size_t i = 0; i < order.size(); i++) cout << order[i] << (i + 1 < order.size() ? " " : "\n");
+    return 0;
+}
+
+=== DAY 154 | Bipartite Graph Check
+--- statement
+Check whether an undirected graph can be coloured with two colours so that every edge joins different colours. Print `true` or `false`.
+
+**Input:** `n m`, then `m` edges.
+**Output:** `true` or `false`.
+--- input
+4 4
+0 1
+1 2
+2 3
+3 0
+--- output
+true
+--- complexity
+Time: O(V + E) | Space: O(V)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<vector<int>> adj(n);
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    vector<int> color(n, -1);
+    for (int s = 0; s < n; s++) {
+        if (color[s] != -1) continue;
+        color[s] = 0;
+        queue<int> q;
+        q.push(s);
+        while (!q.empty()) {
+            int v = q.front();
+            q.pop();
+            for (int u : adj[v]) {
+                if (color[u] == -1) {
+                    color[u] = 1 - color[v];
+                    q.push(u);
+                } else if (color[u] == color[v]) {
+                    cout << "false" << endl;
+                    return 0;
+                }
+            }
+        }
+    }
+    cout << "true" << endl;
+    return 0;
+}
+
+=== DAY 155 | Shortest Path in an Unweighted Graph
+--- statement
+Find the shortest distance (number of edges) from vertex 0 to every vertex using BFS. Print `-1` for unreachable vertices.
+
+**Input:** `n m`, then `m` undirected edges.
+**Output:** `n` distances.
+--- input
+6 5
+0 1
+0 2
+1 3
+3 4
+2 4
+--- output
+0 1 1 2 2 -1
+--- complexity
+Time: O(V + E) | Space: O(V)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<vector<int>> adj(n);
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    vector<int> dist(n, -1);
+    queue<int> q;
+    dist[0] = 0;
+    q.push(0);
+    while (!q.empty()) {
+        int v = q.front();
+        q.pop();
+        for (int u : adj[v]) {
+            if (dist[u] == -1) {
+                dist[u] = dist[v] + 1;
+                q.push(u);
+            }
+        }
+    }
+    for (int i = 0; i < n; i++) cout << dist[i] << (i + 1 < n ? " " : "\n");
+    return 0;
+}
+
+=== DAY 156 | Dijkstra's Shortest Path
+--- statement
+Given a weighted undirected graph with non-negative weights, find the shortest distance from vertex 0 to every vertex. Print `-1` if unreachable.
+
+**Input:** `n m`, then `m` edges `u v w`.
+**Output:** `n` distances.
+--- input
+5 6
+0 1 4
+0 2 1
+2 1 2
+1 3 1
+2 3 5
+3 4 3
+--- output
+0 3 1 4 7
+--- complexity
+Time: O((V + E) log V) | Space: O(V + E)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <functional>
+using namespace std;
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<vector<pair<int, long long>>> adj(n);
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        long long w;
+        cin >> u >> v >> w;
+        adj[u].push_back({v, w});
+        adj[v].push_back({u, w});
+    }
+    const long long INF = 4e18;
+    vector<long long> dist(n, INF);
+    using Item = pair<long long, int>;
+    priority_queue<Item, vector<Item>, greater<Item>> pq;
+    dist[0] = 0;
+    pq.push({0, 0});
+    while (!pq.empty()) {
+        auto [d, v] = pq.top();
+        pq.pop();
+        if (d > dist[v]) continue;
+        for (auto [u, w] : adj[v]) {
+            if (dist[v] + w < dist[u]) {
+                dist[u] = dist[v] + w;
+                pq.push({dist[u], u});
+            }
+        }
+    }
+    for (int i = 0; i < n; i++) cout << (dist[i] == INF ? -1 : dist[i]) << (i + 1 < n ? " " : "\n");
+    return 0;
+}
+
+=== DAY 157 | Bellman-Ford Algorithm
+--- statement
+Find shortest distances from vertex 0 in a **directed** graph that may have negative weights. If a negative cycle is reachable, print `NEGATIVE CYCLE`. Print `INF` for unreachable vertices.
+
+**Input:** `n m`, then `m` edges `u v w`.
+**Output:** `n` distances, or `NEGATIVE CYCLE`.
+--- input
+5 8
+0 1 -1
+0 2 4
+1 2 3
+1 3 2
+1 4 2
+3 2 5
+3 1 1
+4 3 -3
+--- output
+0 -1 2 -2 1
+--- complexity
+Time: O(V * E) | Space: O(V)
+--- code
+#include <iostream>
+#include <vector>
+#include <tuple>
+using namespace std;
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<tuple<int, int, long long>> edges(m);
+    for (auto& [u, v, w] : edges) cin >> u >> v >> w;
+
+    const long long INF = 4e18;
+    vector<long long> dist(n, INF);
+    dist[0] = 0;
+    for (int round = 0; round < n - 1; round++) {
+        for (auto& [u, v, w] : edges) {
+            if (dist[u] != INF && dist[u] + w < dist[v]) dist[v] = dist[u] + w;
+        }
+    }
+    for (auto& [u, v, w] : edges) {
+        if (dist[u] != INF && dist[u] + w < dist[v]) {
+            cout << "NEGATIVE CYCLE" << endl;
+            return 0;
+        }
+    }
+    for (int i = 0; i < n; i++) {
+        if (dist[i] == INF) cout << "INF";
+        else cout << dist[i];
+        cout << (i + 1 < n ? " " : "\n");
+    }
+    return 0;
+}
+
+=== DAY 158 | Floyd-Warshall (All-Pairs Shortest Paths)
+--- statement
+Compute shortest distances between every pair of vertices in a directed weighted graph. Print `INF` for unreachable pairs.
+
+**Input:** `n m`, then `m` edges `u v w`.
+**Output:** an `n x n` matrix.
+--- input
+4 5
+0 1 3
+1 2 1
+2 3 2
+0 3 10
+3 0 1
+--- output
+0 3 4 6
+4 0 1 3
+3 6 0 2
+1 4 5 0
+--- complexity
+Time: O(V^3) | Space: O(V^2)
+--- code
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    const long long INF = 1e18;
+    vector<vector<long long>> d(n, vector<long long>(n, INF));
+    for (int i = 0; i < n; i++) d[i][i] = 0;
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        long long w;
+        cin >> u >> v >> w;
+        d[u][v] = min(d[u][v], w);
+    }
+    for (int k = 0; k < n; k++)
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                if (d[i][k] < INF && d[k][j] < INF)
+                    d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (d[i][j] >= INF) cout << "INF";
+            else cout << d[i][j];
+            cout << (j + 1 < n ? " " : "\n");
+        }
+    }
+    return 0;
+}
+
+=== DAY 159 | Prim's Minimum Spanning Tree
+--- statement
+Find the total weight of the minimum spanning tree of a connected weighted undirected graph using Prim's algorithm.
+
+**Input:** `n m`, then `m` edges `u v w`.
+**Output:** the MST weight.
+--- input
+5 7
+0 1 2
+0 3 6
+1 2 3
+1 3 8
+1 4 5
+2 4 7
+3 4 9
+--- output
+16
+--- complexity
+Time: O(E log V) | Space: O(V + E)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <functional>
+using namespace std;
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<vector<pair<int, int>>> adj(n);
+    for (int i = 0; i < m; i++) {
+        int u, v, w;
+        cin >> u >> v >> w;
+        adj[u].push_back({v, w});
+        adj[v].push_back({u, w});
+    }
+    vector<bool> inTree(n, false);
+    using Item = pair<int, int>;  // weight, vertex
+    priority_queue<Item, vector<Item>, greater<Item>> pq;
+    pq.push({0, 0});
+    long long total = 0;
+    while (!pq.empty()) {
+        auto [w, v] = pq.top();
+        pq.pop();
+        if (inTree[v]) continue;
+        inTree[v] = true;
+        total += w;
+        for (auto [u, wu] : adj[v])
+            if (!inTree[u]) pq.push({wu, u});
+    }
+    cout << total << endl;
+    return 0;
+}
+
+=== DAY 160 | Kruskal's Minimum Spanning Tree
+--- statement
+Find the MST weight using Kruskal's algorithm with a Disjoint Set Union (union by rank + path compression).
+
+**Input:** `n m`, then `m` edges `u v w`.
+**Output:** the MST weight.
+--- input
+4 5
+0 1 10
+0 2 6
+0 3 5
+1 3 15
+2 3 4
+--- output
+19
+--- complexity
+Time: O(E log E) | Space: O(V + E)
+--- code
+#include <iostream>
+#include <vector>
+#include <tuple>
+#include <algorithm>
+#include <numeric>
+using namespace std;
+
+struct DSU {
+    vector<int> parent, rnk;
+    DSU(int n) : parent(n), rnk(n, 0) { iota(parent.begin(), parent.end(), 0); }
+    int find(int x) { return parent[x] == x ? x : parent[x] = find(parent[x]); }
+    bool unite(int a, int b) {
+        a = find(a);
+        b = find(b);
+        if (a == b) return false;
+        if (rnk[a] < rnk[b]) swap(a, b);
+        parent[b] = a;
+        if (rnk[a] == rnk[b]) rnk[a]++;
+        return true;
+    }
+};
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<tuple<int, int, int>> edges(m);  // weight, u, v
+    for (auto& [w, u, v] : edges) cin >> u >> v >> w;
+    sort(edges.begin(), edges.end());
+    DSU dsu(n);
+    long long total = 0;
+    for (auto& [w, u, v] : edges)
+        if (dsu.unite(u, v)) total += w;
+    cout << total << endl;
+    return 0;
+}

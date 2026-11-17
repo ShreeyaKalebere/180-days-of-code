@@ -1,0 +1,1190 @@
+=== DAY 111 | Build a Binary Tree and Inorder Traversal
+--- statement
+Trees in this phase are given in **level order**, with `-1` meaning "no node". Build the tree and print its inorder traversal (left, root, right).
+
+**Input:** `n`, then `n` level-order values.
+**Output:** the inorder traversal.
+--- input
+7
+1 2 3 4 5 -1 6
+--- output
+4 2 5 1 3 6
+--- complexity
+Time: O(n) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+    Node(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+Node* buildLevelOrder(const vector<int>& a) {
+    if (a.empty() || a[0] == -1) return nullptr;
+    Node* root = new Node(a[0]);
+    queue<Node*> q;
+    q.push(root);
+    size_t i = 1;
+    while (!q.empty() && i < a.size()) {
+        Node* cur = q.front();
+        q.pop();
+        if (i < a.size() && a[i] != -1) { cur->left = new Node(a[i]); q.push(cur->left); }
+        i++;
+        if (i < a.size() && a[i] != -1) { cur->right = new Node(a[i]); q.push(cur->right); }
+        i++;
+    }
+    return root;
+}
+
+void inorder(Node* root, vector<int>& out) {
+    if (!root) return;
+    inorder(root->left, out);
+    out.push_back(root->val);
+    inorder(root->right, out);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    Node* root = buildLevelOrder(a);
+    vector<int> out;
+    inorder(root, out);
+    for (size_t i = 0; i < out.size(); i++) cout << out[i] << (i + 1 < out.size() ? " " : "\n");
+    return 0;
+}
+
+=== DAY 112 | Preorder and Postorder Traversals
+--- statement
+Build the tree (level order, `-1` = null) and print the preorder traversal on line 1 and postorder on line 2.
+
+**Input:** `n`, then `n` values.
+**Output:** two lines.
+--- input
+7
+1 2 3 4 5 -1 6
+--- output
+1 2 4 5 3 6
+4 5 2 6 3 1
+--- complexity
+Time: O(n) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+    Node(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+Node* buildLevelOrder(const vector<int>& a) {
+    if (a.empty() || a[0] == -1) return nullptr;
+    Node* root = new Node(a[0]);
+    queue<Node*> q;
+    q.push(root);
+    size_t i = 1;
+    while (!q.empty() && i < a.size()) {
+        Node* cur = q.front();
+        q.pop();
+        if (i < a.size() && a[i] != -1) { cur->left = new Node(a[i]); q.push(cur->left); }
+        i++;
+        if (i < a.size() && a[i] != -1) { cur->right = new Node(a[i]); q.push(cur->right); }
+        i++;
+    }
+    return root;
+}
+
+void preorder(Node* r, vector<int>& out) {
+    if (!r) return;
+    out.push_back(r->val);
+    preorder(r->left, out);
+    preorder(r->right, out);
+}
+
+void postorder(Node* r, vector<int>& out) {
+    if (!r) return;
+    postorder(r->left, out);
+    postorder(r->right, out);
+    out.push_back(r->val);
+}
+
+void printLine(const vector<int>& v) {
+    for (size_t i = 0; i < v.size(); i++) cout << v[i] << (i + 1 < v.size() ? " " : "\n");
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    Node* root = buildLevelOrder(a);
+    vector<int> pre, post;
+    preorder(root, pre);
+    postorder(root, post);
+    printLine(pre);
+    printLine(post);
+    return 0;
+}
+
+=== DAY 113 | Level Order Traversal
+--- statement
+Print the tree level by level, one level per line.
+
+**Input:** `n`, then `n` level-order values (`-1` = null).
+**Output:** one line per level.
+--- input
+7
+3 9 20 -1 -1 15 7
+--- output
+3
+9 20
+15 7
+--- complexity
+Time: O(n) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+    Node(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+Node* buildLevelOrder(const vector<int>& a) {
+    if (a.empty() || a[0] == -1) return nullptr;
+    Node* root = new Node(a[0]);
+    queue<Node*> q;
+    q.push(root);
+    size_t i = 1;
+    while (!q.empty() && i < a.size()) {
+        Node* cur = q.front();
+        q.pop();
+        if (i < a.size() && a[i] != -1) { cur->left = new Node(a[i]); q.push(cur->left); }
+        i++;
+        if (i < a.size() && a[i] != -1) { cur->right = new Node(a[i]); q.push(cur->right); }
+        i++;
+    }
+    return root;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    Node* root = buildLevelOrder(a);
+    if (!root) return 0;
+
+    queue<Node*> q;
+    q.push(root);
+    while (!q.empty()) {
+        int size = q.size();
+        for (int i = 0; i < size; i++) {
+            Node* cur = q.front();
+            q.pop();
+            cout << cur->val << (i + 1 < size ? " " : "\n");
+            if (cur->left) q.push(cur->left);
+            if (cur->right) q.push(cur->right);
+        }
+    }
+    return 0;
+}
+
+=== DAY 114 | Height of a Binary Tree
+--- statement
+Find the height (number of nodes on the longest root-to-leaf path) of a binary tree.
+
+**Input:** `n`, then `n` level-order values (`-1` = null).
+**Output:** the height.
+--- input
+7
+3 9 20 -1 -1 15 7
+--- output
+3
+--- complexity
+Time: O(n) | Space: O(h)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+    Node(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+Node* buildLevelOrder(const vector<int>& a) {
+    if (a.empty() || a[0] == -1) return nullptr;
+    Node* root = new Node(a[0]);
+    queue<Node*> q;
+    q.push(root);
+    size_t i = 1;
+    while (!q.empty() && i < a.size()) {
+        Node* cur = q.front();
+        q.pop();
+        if (i < a.size() && a[i] != -1) { cur->left = new Node(a[i]); q.push(cur->left); }
+        i++;
+        if (i < a.size() && a[i] != -1) { cur->right = new Node(a[i]); q.push(cur->right); }
+        i++;
+    }
+    return root;
+}
+
+int height(Node* r) {
+    if (!r) return 0;
+    return 1 + max(height(r->left), height(r->right));
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    cout << height(buildLevelOrder(a)) << endl;
+    return 0;
+}
+
+=== DAY 115 | Count Nodes and Leaves
+--- statement
+Count the total nodes and the leaf nodes of a binary tree.
+
+**Input:** `n`, then `n` level-order values (`-1` = null).
+**Output:** `nodes leaves`.
+--- input
+7
+1 2 3 4 5 -1 6
+--- output
+6 3
+--- complexity
+Time: O(n) | Space: O(h)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+    Node(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+Node* buildLevelOrder(const vector<int>& a) {
+    if (a.empty() || a[0] == -1) return nullptr;
+    Node* root = new Node(a[0]);
+    queue<Node*> q;
+    q.push(root);
+    size_t i = 1;
+    while (!q.empty() && i < a.size()) {
+        Node* cur = q.front();
+        q.pop();
+        if (i < a.size() && a[i] != -1) { cur->left = new Node(a[i]); q.push(cur->left); }
+        i++;
+        if (i < a.size() && a[i] != -1) { cur->right = new Node(a[i]); q.push(cur->right); }
+        i++;
+    }
+    return root;
+}
+
+int countNodes(Node* r) { return r ? 1 + countNodes(r->left) + countNodes(r->right) : 0; }
+
+int countLeaves(Node* r) {
+    if (!r) return 0;
+    if (!r->left && !r->right) return 1;
+    return countLeaves(r->left) + countLeaves(r->right);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    Node* root = buildLevelOrder(a);
+    cout << countNodes(root) << " " << countLeaves(root) << endl;
+    return 0;
+}
+
+=== DAY 116 | Diameter of a Binary Tree
+--- statement
+The diameter is the number of **edges** on the longest path between any two nodes. Compute it in one DFS.
+
+**Input:** `n`, then `n` level-order values (`-1` = null).
+**Output:** the diameter.
+--- input
+5
+1 2 3 4 5
+--- output
+3
+--- complexity
+Time: O(n) | Space: O(h)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+    Node(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+Node* buildLevelOrder(const vector<int>& a) {
+    if (a.empty() || a[0] == -1) return nullptr;
+    Node* root = new Node(a[0]);
+    queue<Node*> q;
+    q.push(root);
+    size_t i = 1;
+    while (!q.empty() && i < a.size()) {
+        Node* cur = q.front();
+        q.pop();
+        if (i < a.size() && a[i] != -1) { cur->left = new Node(a[i]); q.push(cur->left); }
+        i++;
+        if (i < a.size() && a[i] != -1) { cur->right = new Node(a[i]); q.push(cur->right); }
+        i++;
+    }
+    return root;
+}
+
+int best = 0;
+
+int depth(Node* r) {
+    if (!r) return 0;
+    int l = depth(r->left), rr = depth(r->right);
+    best = max(best, l + rr);
+    return 1 + max(l, rr);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    depth(buildLevelOrder(a));
+    cout << best << endl;
+    return 0;
+}
+
+=== DAY 117 | Check if a Tree Is Height-Balanced
+--- statement
+A tree is balanced if, for every node, the heights of its left and right subtrees differ by at most 1. Print `true` or `false`.
+
+**Input:** `n`, then `n` level-order values (`-1` = null).
+**Output:** `true` or `false`.
+--- input
+9
+1 2 2 3 3 -1 -1 4 4
+--- output
+false
+--- complexity
+Time: O(n) | Space: O(h)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <cstdlib>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+    Node(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+Node* buildLevelOrder(const vector<int>& a) {
+    if (a.empty() || a[0] == -1) return nullptr;
+    Node* root = new Node(a[0]);
+    queue<Node*> q;
+    q.push(root);
+    size_t i = 1;
+    while (!q.empty() && i < a.size()) {
+        Node* cur = q.front();
+        q.pop();
+        if (i < a.size() && a[i] != -1) { cur->left = new Node(a[i]); q.push(cur->left); }
+        i++;
+        if (i < a.size() && a[i] != -1) { cur->right = new Node(a[i]); q.push(cur->right); }
+        i++;
+    }
+    return root;
+}
+
+// Returns height, or -1 if the subtree is unbalanced.
+int check(Node* r) {
+    if (!r) return 0;
+    int l = check(r->left);
+    if (l == -1) return -1;
+    int rr = check(r->right);
+    if (rr == -1) return -1;
+    if (abs(l - rr) > 1) return -1;
+    return 1 + max(l, rr);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    cout << (check(buildLevelOrder(a)) != -1 ? "true" : "false") << endl;
+    return 0;
+}
+
+=== DAY 118 | Mirror a Binary Tree
+--- statement
+Convert a tree into its mirror image (swap left and right children everywhere), then print the level order of the mirrored tree on one line.
+
+**Input:** `n`, then `n` level-order values (`-1` = null).
+**Output:** the mirrored level order.
+--- input
+7
+4 2 7 1 3 6 9
+--- output
+4 7 2 9 6 3 1
+--- complexity
+Time: O(n) | Space: O(h)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+    Node(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+Node* buildLevelOrder(const vector<int>& a) {
+    if (a.empty() || a[0] == -1) return nullptr;
+    Node* root = new Node(a[0]);
+    queue<Node*> q;
+    q.push(root);
+    size_t i = 1;
+    while (!q.empty() && i < a.size()) {
+        Node* cur = q.front();
+        q.pop();
+        if (i < a.size() && a[i] != -1) { cur->left = new Node(a[i]); q.push(cur->left); }
+        i++;
+        if (i < a.size() && a[i] != -1) { cur->right = new Node(a[i]); q.push(cur->right); }
+        i++;
+    }
+    return root;
+}
+
+void mirror(Node* r) {
+    if (!r) return;
+    swap(r->left, r->right);
+    mirror(r->left);
+    mirror(r->right);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    Node* root = buildLevelOrder(a);
+    mirror(root);
+
+    vector<int> out;
+    queue<Node*> q;
+    if (root) q.push(root);
+    while (!q.empty()) {
+        Node* cur = q.front();
+        q.pop();
+        out.push_back(cur->val);
+        if (cur->left) q.push(cur->left);
+        if (cur->right) q.push(cur->right);
+    }
+    for (size_t i = 0; i < out.size(); i++) cout << out[i] << (i + 1 < out.size() ? " " : "\n");
+    return 0;
+}
+
+=== DAY 119 | Left View of a Binary Tree
+--- statement
+Print the first node visible from the left side at every level.
+
+**Input:** `n`, then `n` level-order values (`-1` = null).
+**Output:** the left view.
+--- input
+7
+1 2 3 -1 5 -1 4
+--- output
+1 2 5
+--- complexity
+Time: O(n) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+    Node(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+Node* buildLevelOrder(const vector<int>& a) {
+    if (a.empty() || a[0] == -1) return nullptr;
+    Node* root = new Node(a[0]);
+    queue<Node*> q;
+    q.push(root);
+    size_t i = 1;
+    while (!q.empty() && i < a.size()) {
+        Node* cur = q.front();
+        q.pop();
+        if (i < a.size() && a[i] != -1) { cur->left = new Node(a[i]); q.push(cur->left); }
+        i++;
+        if (i < a.size() && a[i] != -1) { cur->right = new Node(a[i]); q.push(cur->right); }
+        i++;
+    }
+    return root;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    Node* root = buildLevelOrder(a);
+
+    vector<int> view;
+    queue<Node*> q;
+    if (root) q.push(root);
+    while (!q.empty()) {
+        int size = q.size();
+        for (int i = 0; i < size; i++) {
+            Node* cur = q.front();
+            q.pop();
+            if (i == 0) view.push_back(cur->val);
+            if (cur->left) q.push(cur->left);
+            if (cur->right) q.push(cur->right);
+        }
+    }
+    for (size_t i = 0; i < view.size(); i++) cout << view[i] << (i + 1 < view.size() ? " " : "\n");
+    return 0;
+}
+
+=== DAY 120 | Zigzag Level Order Traversal
+--- statement
+Print the level order traversal in zigzag order: left-to-right for the first level, right-to-left for the next, and so on. One level per line.
+
+**Input:** `n`, then `n` level-order values (`-1` = null).
+**Output:** one line per level.
+--- input
+7
+1 2 3 4 5 6 7
+--- output
+1
+3 2
+4 5 6 7
+--- complexity
+Time: O(n) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+    Node(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+Node* buildLevelOrder(const vector<int>& a) {
+    if (a.empty() || a[0] == -1) return nullptr;
+    Node* root = new Node(a[0]);
+    queue<Node*> q;
+    q.push(root);
+    size_t i = 1;
+    while (!q.empty() && i < a.size()) {
+        Node* cur = q.front();
+        q.pop();
+        if (i < a.size() && a[i] != -1) { cur->left = new Node(a[i]); q.push(cur->left); }
+        i++;
+        if (i < a.size() && a[i] != -1) { cur->right = new Node(a[i]); q.push(cur->right); }
+        i++;
+    }
+    return root;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    Node* root = buildLevelOrder(a);
+
+    queue<Node*> q;
+    if (root) q.push(root);
+    bool leftToRight = true;
+    while (!q.empty()) {
+        int size = q.size();
+        vector<int> level;
+        for (int i = 0; i < size; i++) {
+            Node* cur = q.front();
+            q.pop();
+            level.push_back(cur->val);
+            if (cur->left) q.push(cur->left);
+            if (cur->right) q.push(cur->right);
+        }
+        if (!leftToRight) reverse(level.begin(), level.end());
+        for (size_t i = 0; i < level.size(); i++) cout << level[i] << (i + 1 < level.size() ? " " : "\n");
+        leftToRight = !leftToRight;
+    }
+    return 0;
+}
+
+=== DAY 121 | Lowest Common Ancestor in a Binary Tree
+--- statement
+Find the lowest common ancestor of two node values `p` and `q` (both exist, values are unique).
+
+**Input:** `n`, then `n` level-order values (`-1` = null), then `p q`.
+**Output:** the LCA value.
+--- input
+11
+3 5 1 6 2 0 8 -1 -1 7 4
+7 6
+--- output
+5
+--- complexity
+Time: O(n) | Space: O(h)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+    Node(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+Node* buildLevelOrder(const vector<int>& a) {
+    if (a.empty() || a[0] == -1) return nullptr;
+    Node* root = new Node(a[0]);
+    queue<Node*> q;
+    q.push(root);
+    size_t i = 1;
+    while (!q.empty() && i < a.size()) {
+        Node* cur = q.front();
+        q.pop();
+        if (i < a.size() && a[i] != -1) { cur->left = new Node(a[i]); q.push(cur->left); }
+        i++;
+        if (i < a.size() && a[i] != -1) { cur->right = new Node(a[i]); q.push(cur->right); }
+        i++;
+    }
+    return root;
+}
+
+Node* lca(Node* r, int p, int q) {
+    if (!r || r->val == p || r->val == q) return r;
+    Node* l = lca(r->left, p, q);
+    Node* rr = lca(r->right, p, q);
+    if (l && rr) return r;
+    return l ? l : rr;
+}
+
+int main() {
+    int n, p, q;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    cin >> p >> q;
+    cout << lca(buildLevelOrder(a), p, q)->val << endl;
+    return 0;
+}
+
+=== DAY 122 | Insert into a Binary Search Tree
+--- statement
+Insert `n` values one by one into an empty BST and print its inorder traversal (which should be sorted).
+
+**Input:** `n`, then `n` integers.
+**Output:** the inorder traversal.
+--- input
+7
+50 30 70 20 40 60 80
+--- output
+20 30 40 50 60 70 80
+--- complexity
+Time: O(h) per insert | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+    Node(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+Node* insert(Node* r, int x) {
+    if (!r) return new Node(x);
+    if (x < r->val) r->left = insert(r->left, x);
+    else r->right = insert(r->right, x);
+    return r;
+}
+
+void inorder(Node* r, vector<int>& out) {
+    if (!r) return;
+    inorder(r->left, out);
+    out.push_back(r->val);
+    inorder(r->right, out);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    Node* root = nullptr;
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        root = insert(root, x);
+    }
+    vector<int> out;
+    inorder(root, out);
+    for (size_t i = 0; i < out.size(); i++) cout << out[i] << (i + 1 < out.size() ? " " : "\n");
+    return 0;
+}
+
+=== DAY 123 | Search in a BST
+--- statement
+Build a BST by inserting `n` values, then search for `key` iteratively. Print `Found` or `Not Found`.
+
+**Input:** `n`, then `n` integers, then `key`.
+**Output:** `Found` or `Not Found`.
+--- input
+6
+8 3 10 1 6 14
+6
+--- output
+Found
+--- complexity
+Time: O(h) | Space: O(1) for the search
+--- code
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+    Node(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+Node* insert(Node* r, int x) {
+    if (!r) return new Node(x);
+    if (x < r->val) r->left = insert(r->left, x);
+    else r->right = insert(r->right, x);
+    return r;
+}
+
+int main() {
+    int n, key;
+    cin >> n;
+    Node* root = nullptr;
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        root = insert(root, x);
+    }
+    cin >> key;
+    Node* cur = root;
+    while (cur && cur->val != key) cur = key < cur->val ? cur->left : cur->right;
+    cout << (cur ? "Found" : "Not Found") << endl;
+    return 0;
+}
+
+=== DAY 124 | Validate a Binary Search Tree
+--- statement
+Check whether a binary tree (given in level order, `-1` = null) is a valid BST with strictly increasing inorder values. Print `true` or `false`.
+
+**Input:** `n`, then `n` level-order values.
+**Output:** `true` or `false`.
+--- input
+7
+5 1 4 -1 -1 3 6
+--- output
+false
+--- complexity
+Time: O(n) | Space: O(h)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+    Node(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+Node* buildLevelOrder(const vector<int>& a) {
+    if (a.empty() || a[0] == -1) return nullptr;
+    Node* root = new Node(a[0]);
+    queue<Node*> q;
+    q.push(root);
+    size_t i = 1;
+    while (!q.empty() && i < a.size()) {
+        Node* cur = q.front();
+        q.pop();
+        if (i < a.size() && a[i] != -1) { cur->left = new Node(a[i]); q.push(cur->left); }
+        i++;
+        if (i < a.size() && a[i] != -1) { cur->right = new Node(a[i]); q.push(cur->right); }
+        i++;
+    }
+    return root;
+}
+
+bool valid(Node* r, long long lo, long long hi) {
+    if (!r) return true;
+    if (r->val <= lo || r->val >= hi) return false;
+    return valid(r->left, lo, r->val) && valid(r->right, r->val, hi);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    cout << (valid(buildLevelOrder(a), LLONG_MIN, LLONG_MAX) ? "true" : "false") << endl;
+    return 0;
+}
+
+=== DAY 125 | Minimum and Maximum in a BST
+--- statement
+Build a BST from `n` inserted values and print its minimum and maximum by walking left and right.
+
+**Input:** `n`, then `n` integers.
+**Output:** `min max`.
+--- input
+6
+15 10 20 8 12 25
+--- output
+8 25
+--- complexity
+Time: O(h) | Space: O(1) for the walk
+--- code
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+    Node(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+Node* insert(Node* r, int x) {
+    if (!r) return new Node(x);
+    if (x < r->val) r->left = insert(r->left, x);
+    else r->right = insert(r->right, x);
+    return r;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    Node* root = nullptr;
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        root = insert(root, x);
+    }
+    Node* lo = root;
+    while (lo->left) lo = lo->left;
+    Node* hi = root;
+    while (hi->right) hi = hi->right;
+    cout << lo->val << " " << hi->val << endl;
+    return 0;
+}
+
+=== DAY 126 | Kth Smallest Element in a BST
+--- statement
+Build a BST from `n` inserted values and find the k-th smallest value using an inorder traversal that stops early.
+
+**Input:** `n k`, then `n` integers.
+**Output:** the k-th smallest value.
+--- input
+6 3
+5 3 6 2 4 1
+--- output
+3
+--- complexity
+Time: O(h + k) | Space: O(h)
+--- code
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+    Node(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+Node* insert(Node* r, int x) {
+    if (!r) return new Node(x);
+    if (x < r->val) r->left = insert(r->left, x);
+    else r->right = insert(r->right, x);
+    return r;
+}
+
+int counter = 0, answer = -1;
+
+void inorder(Node* r, int k) {
+    if (!r || answer != -1) return;
+    inorder(r->left, k);
+    if (++counter == k) {
+        answer = r->val;
+        return;
+    }
+    inorder(r->right, k);
+}
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+    Node* root = nullptr;
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        root = insert(root, x);
+    }
+    inorder(root, k);
+    cout << answer << endl;
+    return 0;
+}
+
+=== DAY 127 | Delete a Node from a BST
+--- statement
+Build a BST from `n` inserted values, delete `key` (handle 0, 1 and 2 children; use the inorder successor), and print the inorder traversal.
+
+**Input:** `n`, then `n` integers, then `key`.
+**Output:** the inorder traversal after deletion.
+--- input
+7
+50 30 70 20 40 60 80
+50
+--- output
+20 30 40 60 70 80
+--- complexity
+Time: O(h) | Space: O(h)
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+    Node(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+Node* insert(Node* r, int x) {
+    if (!r) return new Node(x);
+    if (x < r->val) r->left = insert(r->left, x);
+    else r->right = insert(r->right, x);
+    return r;
+}
+
+Node* removeKey(Node* r, int key) {
+    if (!r) return nullptr;
+    if (key < r->val) r->left = removeKey(r->left, key);
+    else if (key > r->val) r->right = removeKey(r->right, key);
+    else {
+        if (!r->left) { Node* t = r->right; delete r; return t; }
+        if (!r->right) { Node* t = r->left; delete r; return t; }
+        Node* succ = r->right;
+        while (succ->left) succ = succ->left;
+        r->val = succ->val;
+        r->right = removeKey(r->right, succ->val);
+    }
+    return r;
+}
+
+void inorder(Node* r, vector<int>& out) {
+    if (!r) return;
+    inorder(r->left, out);
+    out.push_back(r->val);
+    inorder(r->right, out);
+}
+
+int main() {
+    int n, key;
+    cin >> n;
+    Node* root = nullptr;
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        root = insert(root, x);
+    }
+    cin >> key;
+    root = removeKey(root, key);
+    vector<int> out;
+    inorder(root, out);
+    for (size_t i = 0; i < out.size(); i++) cout << out[i] << (i + 1 < out.size() ? " " : "\n");
+    return 0;
+}
+
+=== DAY 128 | Kth Largest Element Using a Min-Heap
+--- statement
+Find the k-th largest element by keeping a min-heap (`priority_queue`) of size `k`.
+
+**Input:** `n k`, then `n` integers.
+**Output:** the k-th largest value.
+--- input
+6 2
+3 2 1 5 6 4
+--- output
+5
+--- complexity
+Time: O(n log k) | Space: O(k)
+--- code
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <functional>
+using namespace std;
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+    priority_queue<int, vector<int>, greater<int>> heap;
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        heap.push(x);
+        if ((int)heap.size() > k) heap.pop();
+    }
+    cout << heap.top() << endl;
+    return 0;
+}
+
+=== DAY 129 | Heap Sort
+--- statement
+Sort an array in ascending order using heap sort (build a max-heap, then repeatedly move the max to the end).
+
+**Input:** `n`, then `n` integers.
+**Output:** the sorted array.
+--- input
+6
+12 11 13 5 6 7
+--- output
+5 6 7 11 12 13
+--- complexity
+Time: O(n log n) | Space: O(1)
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void heapify(vector<int>& a, int n, int i) {
+    while (true) {
+        int largest = i, l = 2 * i + 1, r = 2 * i + 2;
+        if (l < n && a[l] > a[largest]) largest = l;
+        if (r < n && a[r] > a[largest]) largest = r;
+        if (largest == i) return;
+        swap(a[i], a[largest]);
+        i = largest;
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    for (int i = n / 2 - 1; i >= 0; i--) heapify(a, n, i);
+    for (int end = n - 1; end > 0; end--) {
+        swap(a[0], a[end]);
+        heapify(a, end, 0);
+    }
+    for (int i = 0; i < n; i++) cout << a[i] << (i + 1 < n ? " " : "\n");
+    return 0;
+}
+
+=== DAY 130 | Merge K Sorted Arrays
+--- statement
+Merge `k` sorted arrays into one sorted array using a min-heap.
+
+**Input:** `k`, then for each array its length followed by its elements.
+**Output:** the merged array.
+--- input
+3
+3 1 4 7
+2 2 5
+4 0 3 6 9
+--- output
+0 1 2 3 4 5 6 7 9
+--- complexity
+Time: O(N log k) | Space: O(k)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <tuple>
+#include <functional>
+using namespace std;
+
+int main() {
+    int k;
+    cin >> k;
+    vector<vector<int>> arrs(k);
+    for (auto& arr : arrs) {
+        int len;
+        cin >> len;
+        arr.resize(len);
+        for (auto& x : arr) cin >> x;
+    }
+    using Item = tuple<int, int, int>;  // value, array index, element index
+    priority_queue<Item, vector<Item>, greater<Item>> heap;
+    for (int i = 0; i < k; i++)
+        if (!arrs[i].empty()) heap.push({arrs[i][0], i, 0});
+
+    vector<int> out;
+    while (!heap.empty()) {
+        auto [val, ai, ei] = heap.top();
+        heap.pop();
+        out.push_back(val);
+        if (ei + 1 < (int)arrs[ai].size()) heap.push({arrs[ai][ei + 1], ai, ei + 1});
+    }
+    for (size_t i = 0; i < out.size(); i++) cout << out[i] << (i + 1 < out.size() ? " " : "\n");
+    return 0;
+}

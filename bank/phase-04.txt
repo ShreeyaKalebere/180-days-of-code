@@ -1,0 +1,807 @@
+=== DAY 56 | Print 1 to N Using Recursion
+--- statement
+Print numbers from 1 to `n` using recursion only (no loops).
+
+**Input:** an integer `n`.
+**Output:** numbers separated by spaces.
+--- input
+5
+--- output
+1 2 3 4 5
+--- complexity
+Time: O(n) | Space: O(n) recursion stack
+--- code
+#include <iostream>
+using namespace std;
+
+void printUpTo(int i, int n) {
+    if (i > n) return;
+    cout << i << (i < n ? " " : "\n");
+    printUpTo(i + 1, n);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    printUpTo(1, n);
+    return 0;
+}
+
+=== DAY 57 | Nth Fibonacci Number (Recursion)
+--- statement
+Return the n-th Fibonacci number recursively, where `F(0) = 0`, `F(1) = 1`. Then think about why this is slow.
+
+**Input:** an integer `n` (0 ≤ n ≤ 30).
+**Output:** `F(n)`.
+--- input
+10
+--- output
+55
+--- complexity
+Time: O(2^n) | Space: O(n) recursion stack
+--- code
+#include <iostream>
+using namespace std;
+
+int fib(int n) {
+    if (n < 2) return n;
+    return fib(n - 1) + fib(n - 2);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    cout << fib(n) << endl;
+    return 0;
+}
+
+=== DAY 58 | Sum of an Array Using Recursion
+--- statement
+Compute the sum of an array recursively.
+
+**Input:** `n`, then `n` integers.
+**Output:** the sum.
+--- input
+5
+3 1 4 1 5
+--- output
+14
+--- complexity
+Time: O(n) | Space: O(n) recursion stack
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+long long sumFrom(const vector<int>& a, int i) {
+    if (i == (int)a.size()) return 0;
+    return a[i] + sumFrom(a, i + 1);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    cout << sumFrom(a, 0) << endl;
+    return 0;
+}
+
+=== DAY 59 | Check if an Array Is Sorted (Recursion)
+--- statement
+Check recursively whether an array is sorted in non-decreasing order. Print `true` or `false`.
+
+**Input:** `n`, then `n` integers.
+**Output:** `true` or `false`.
+--- input
+5
+1 2 2 4 3
+--- output
+false
+--- complexity
+Time: O(n) | Space: O(n) recursion stack
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+bool isSorted(const vector<int>& a, int i) {
+    if (i + 1 >= (int)a.size()) return true;
+    if (a[i] > a[i + 1]) return false;
+    return isSorted(a, i + 1);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    cout << (isSorted(a, 0) ? "true" : "false") << endl;
+    return 0;
+}
+
+=== DAY 60 | Reverse a String Using Recursion
+--- statement
+Reverse a string in place recursively by swapping the outer characters.
+
+**Input:** a word.
+**Output:** the reversed word.
+--- input
+recursion
+--- output
+noisrucer
+--- complexity
+Time: O(n) | Space: O(n) recursion stack
+--- code
+#include <iostream>
+#include <string>
+using namespace std;
+
+void reverseRec(string& s, int l, int r) {
+    if (l >= r) return;
+    swap(s[l], s[r]);
+    reverseRec(s, l + 1, r - 1);
+}
+
+int main() {
+    string s;
+    cin >> s;
+    reverseRec(s, 0, (int)s.size() - 1);
+    cout << s << endl;
+    return 0;
+}
+
+=== DAY 61 | Fast Power (Binary Exponentiation)
+--- statement
+Compute `x^n mod 1000000007` recursively in O(log n) by halving the exponent.
+
+**Input:** two integers `x n` (n ≥ 0).
+**Output:** `x^n mod 1e9+7`.
+--- input
+2 30
+--- output
+73741817
+--- complexity
+Time: O(log n) | Space: O(log n) recursion stack
+--- code
+#include <iostream>
+using namespace std;
+
+const long long MOD = 1000000007LL;
+
+long long power(long long x, long long n) {
+    if (n == 0) return 1;
+    long long half = power(x, n / 2);
+    long long result = half * half % MOD;
+    if (n % 2 == 1) result = result * (x % MOD) % MOD;
+    return result;
+}
+
+int main() {
+    long long x, n;
+    cin >> x >> n;
+    cout << power(x, n) << endl;
+    return 0;
+}
+
+=== DAY 62 | Tower of Hanoi
+--- statement
+Move `n` disks from rod `A` to rod `C` using rod `B`. Print every move as `Move disk d from X to Y`, then the total number of moves.
+
+**Input:** an integer `n`.
+**Output:** the moves, then the count.
+--- input
+2
+--- output
+Move disk 1 from A to B
+Move disk 2 from A to C
+Move disk 1 from B to C
+3
+--- complexity
+Time: O(2^n) | Space: O(n) recursion stack
+--- code
+#include <iostream>
+using namespace std;
+
+long long moves = 0;
+
+void hanoi(int n, char from, char to, char via) {
+    if (n == 0) return;
+    hanoi(n - 1, from, via, to);
+    cout << "Move disk " << n << " from " << from << " to " << to << "\n";
+    moves++;
+    hanoi(n - 1, via, to, from);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    hanoi(n, 'A', 'C', 'B');
+    cout << moves << "\n";
+    return 0;
+}
+
+=== DAY 63 | Palindrome Check Using Recursion
+--- statement
+Check recursively whether a word is a palindrome. Print `true` or `false`.
+
+**Input:** a word.
+**Output:** `true` or `false`.
+--- input
+racecar
+--- output
+true
+--- complexity
+Time: O(n) | Space: O(n) recursion stack
+--- code
+#include <iostream>
+#include <string>
+using namespace std;
+
+bool isPal(const string& s, int l, int r) {
+    if (l >= r) return true;
+    if (s[l] != s[r]) return false;
+    return isPal(s, l + 1, r - 1);
+}
+
+int main() {
+    string s;
+    cin >> s;
+    cout << (isPal(s, 0, (int)s.size() - 1) ? "true" : "false") << endl;
+    return 0;
+}
+
+=== DAY 64 | Generate All Subsets
+--- statement
+Print all subsets of an array of distinct integers using recursion (take / don't take). Print the empty subset as `{}`. Use the order produced by "take first, then skip".
+
+**Input:** `n`, then `n` integers.
+**Output:** one subset per line.
+--- input
+3
+1 2 3
+--- output
+1 2 3
+1 2
+1 3
+1
+2 3
+2
+3
+{}
+--- complexity
+Time: O(n * 2^n) | Space: O(n) recursion stack
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void subsets(const vector<int>& a, int i, vector<int>& cur) {
+    if (i == (int)a.size()) {
+        if (cur.empty()) cout << "{}";
+        for (size_t k = 0; k < cur.size(); k++) cout << cur[k] << (k + 1 < cur.size() ? " " : "");
+        cout << "\n";
+        return;
+    }
+    cur.push_back(a[i]);
+    subsets(a, i + 1, cur);
+    cur.pop_back();
+    subsets(a, i + 1, cur);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n), cur;
+    for (auto& x : a) cin >> x;
+    subsets(a, 0, cur);
+    return 0;
+}
+
+=== DAY 65 | All Subsequences of a String
+--- statement
+Print all non-empty subsequences of a string, sorted in lexicographic order.
+
+**Input:** a word (length ≤ 15).
+**Output:** one subsequence per line.
+--- input
+abc
+--- output
+a
+ab
+abc
+ac
+b
+bc
+c
+--- complexity
+Time: O(n * 2^n log 2^n) | Space: O(n * 2^n)
+--- code
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+void gen(const string& s, int i, string& cur, vector<string>& out) {
+    if (i == (int)s.size()) {
+        if (!cur.empty()) out.push_back(cur);
+        return;
+    }
+    cur.push_back(s[i]);
+    gen(s, i + 1, cur, out);
+    cur.pop_back();
+    gen(s, i + 1, cur, out);
+}
+
+int main() {
+    string s, cur;
+    cin >> s;
+    vector<string> out;
+    gen(s, 0, cur, out);
+    sort(out.begin(), out.end());
+    for (const auto& t : out) cout << t << "\n";
+    return 0;
+}
+
+=== DAY 66 | Count Subsets with Sum K
+--- statement
+Count how many subsets of the array add up to exactly `k`.
+
+**Input:** `n k`, then `n` positive integers.
+**Output:** the count.
+--- input
+5 10
+2 3 5 6 8
+--- output
+2
+--- complexity
+Time: O(2^n) | Space: O(n) recursion stack
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int countSubsets(const vector<int>& a, int i, int remaining) {
+    if (i == (int)a.size()) return remaining == 0 ? 1 : 0;
+    return countSubsets(a, i + 1, remaining - a[i]) + countSubsets(a, i + 1, remaining);
+}
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    cout << countSubsets(a, 0, k) << endl;
+    return 0;
+}
+
+=== DAY 67 | Permutations of an Array
+--- statement
+Print all permutations of an array of distinct integers using backtracking with swaps. Print them in lexicographic order.
+
+**Input:** `n`, then `n` distinct integers.
+**Output:** one permutation per line.
+--- input
+3
+1 2 3
+--- output
+1 2 3
+1 3 2
+2 1 3
+2 3 1
+3 1 2
+3 2 1
+--- complexity
+Time: O(n * n!) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+void permute(vector<int>& a, int i, vector<vector<int>>& out) {
+    if (i == (int)a.size()) {
+        out.push_back(a);
+        return;
+    }
+    for (int j = i; j < (int)a.size(); j++) {
+        swap(a[i], a[j]);
+        permute(a, i + 1, out);
+        swap(a[i], a[j]);
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    vector<vector<int>> out;
+    permute(a, 0, out);
+    sort(out.begin(), out.end());
+    for (const auto& p : out)
+        for (int k = 0; k < n; k++) cout << p[k] << (k + 1 < n ? " " : "\n");
+    return 0;
+}
+
+=== DAY 68 | Unique Permutations of a String
+--- statement
+Print all **unique** permutations of a string (it may contain repeated characters) in lexicographic order, using backtracking with a used[] array.
+
+**Input:** a word.
+**Output:** one permutation per line.
+--- input
+aab
+--- output
+aab
+aba
+baa
+--- complexity
+Time: O(n * n!) | Space: O(n)
+--- code
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+void build(const string& s, vector<bool>& used, string& cur) {
+    if (cur.size() == s.size()) {
+        cout << cur << "\n";
+        return;
+    }
+    for (size_t i = 0; i < s.size(); i++) {
+        if (used[i]) continue;
+        if (i > 0 && s[i] == s[i - 1] && !used[i - 1]) continue;
+        used[i] = true;
+        cur.push_back(s[i]);
+        build(s, used, cur);
+        cur.pop_back();
+        used[i] = false;
+    }
+}
+
+int main() {
+    string s, cur;
+    cin >> s;
+    sort(s.begin(), s.end());
+    vector<bool> used(s.size(), false);
+    build(s, used, cur);
+    return 0;
+}
+
+=== DAY 69 | Combination Sum
+--- statement
+Given distinct positive candidates and a target, print every combination (each number may be used many times) that sums to the target. Print numbers in non-decreasing order within a combination, and combinations in lexicographic order.
+
+**Input:** `n target`, then `n` integers.
+**Output:** one combination per line.
+--- input
+4 7
+2 3 6 7
+--- output
+2 2 3
+7
+--- complexity
+Time: exponential | Space: O(target) recursion stack
+--- code
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+void solve(const vector<int>& c, int start, int remaining, vector<int>& cur) {
+    if (remaining == 0) {
+        for (size_t k = 0; k < cur.size(); k++) cout << cur[k] << (k + 1 < cur.size() ? " " : "\n");
+        return;
+    }
+    for (int i = start; i < (int)c.size() && c[i] <= remaining; i++) {
+        cur.push_back(c[i]);
+        solve(c, i, remaining - c[i], cur);
+        cur.pop_back();
+    }
+}
+
+int main() {
+    int n, target;
+    cin >> n >> target;
+    vector<int> c(n), cur;
+    for (auto& x : c) cin >> x;
+    sort(c.begin(), c.end());
+    solve(c, 0, target, cur);
+    return 0;
+}
+
+=== DAY 70 | Generate Balanced Parentheses
+--- statement
+Print all combinations of `n` pairs of balanced parentheses in lexicographic order (`(` comes before `)`).
+
+**Input:** an integer `n`.
+**Output:** one string per line.
+--- input
+3
+--- output
+((()))
+(()())
+(())()
+()(())
+()()()
+--- complexity
+Time: O(4^n / √n) | Space: O(n)
+--- code
+#include <iostream>
+#include <string>
+using namespace std;
+
+void gen(int open, int close, int n, string& cur) {
+    if ((int)cur.size() == 2 * n) {
+        cout << cur << "\n";
+        return;
+    }
+    if (open < n) {
+        cur.push_back('(');
+        gen(open + 1, close, n, cur);
+        cur.pop_back();
+    }
+    if (close < open) {
+        cur.push_back(')');
+        gen(open, close + 1, n, cur);
+        cur.pop_back();
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+    string cur;
+    gen(0, 0, n, cur);
+    return 0;
+}
+
+=== DAY 71 | Letter Combinations of a Phone Number
+--- statement
+Given a string of digits 2-9, print all letter combinations the number could represent on a phone keypad (2=abc, 3=def, ..., 9=wxyz).
+
+**Input:** a digit string.
+**Output:** one combination per line.
+--- input
+23
+--- output
+ad
+ae
+af
+bd
+be
+bf
+cd
+ce
+cf
+--- complexity
+Time: O(4^n * n) | Space: O(n)
+--- code
+#include <iostream>
+#include <string>
+using namespace std;
+
+const string KEYS[10] = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
+void gen(const string& digits, int i, string& cur) {
+    if (i == (int)digits.size()) {
+        cout << cur << "\n";
+        return;
+    }
+    for (char c : KEYS[digits[i] - '0']) {
+        cur.push_back(c);
+        gen(digits, i + 1, cur);
+        cur.pop_back();
+    }
+}
+
+int main() {
+    string digits, cur;
+    cin >> digits;
+    gen(digits, 0, cur);
+    return 0;
+}
+
+=== DAY 72 | N-Queens (Count Solutions)
+--- statement
+Count the ways to place `n` queens on an `n x n` board so that no two attack each other.
+
+**Input:** an integer `n` (1 ≤ n ≤ 12).
+**Output:** number of solutions.
+--- input
+6
+--- output
+4
+--- complexity
+Time: O(n!) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int n, solutions = 0;
+vector<bool> colUsed, diag1, diag2;
+
+void place(int row) {
+    if (row == n) {
+        solutions++;
+        return;
+    }
+    for (int c = 0; c < n; c++) {
+        if (colUsed[c] || diag1[row + c] || diag2[row - c + n - 1]) continue;
+        colUsed[c] = diag1[row + c] = diag2[row - c + n - 1] = true;
+        place(row + 1);
+        colUsed[c] = diag1[row + c] = diag2[row - c + n - 1] = false;
+    }
+}
+
+int main() {
+    cin >> n;
+    colUsed.assign(n, false);
+    diag1.assign(2 * n, false);
+    diag2.assign(2 * n, false);
+    place(0);
+    cout << solutions << endl;
+    return 0;
+}
+
+=== DAY 73 | Rat in a Maze
+--- statement
+A rat starts at the top-left of an `n x n` grid (1 = open, 0 = blocked) and must reach the bottom-right moving `D`, `L`, `R`, `U` without revisiting cells. Print all paths in lexicographic order, or `-1` if there is none.
+
+**Input:** `n`, then the grid.
+**Output:** one path per line.
+--- input
+4
+1 0 0 0
+1 1 0 1
+1 1 0 0
+0 1 1 1
+--- output
+DDRDRR
+DRDDRR
+--- complexity
+Time: O(4^(n^2)) worst | Space: O(n^2)
+--- code
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+int n;
+vector<vector<int>> g;
+vector<vector<bool>> seen;
+vector<string> paths;
+const int DR[4] = {1, 0, 0, -1};
+const int DC[4] = {0, -1, 1, 0};
+const char DIR[4] = {'D', 'L', 'R', 'U'};
+
+void walk(int r, int c, string& path) {
+    if (r == n - 1 && c == n - 1) {
+        paths.push_back(path);
+        return;
+    }
+    for (int k = 0; k < 4; k++) {
+        int nr = r + DR[k], nc = c + DC[k];
+        if (nr < 0 || nc < 0 || nr >= n || nc >= n) continue;
+        if (g[nr][nc] == 0 || seen[nr][nc]) continue;
+        seen[nr][nc] = true;
+        path.push_back(DIR[k]);
+        walk(nr, nc, path);
+        path.pop_back();
+        seen[nr][nc] = false;
+    }
+}
+
+int main() {
+    cin >> n;
+    g.assign(n, vector<int>(n));
+    seen.assign(n, vector<bool>(n, false));
+    for (auto& row : g) for (auto& x : row) cin >> x;
+
+    if (g[0][0] == 1) {
+        string path;
+        seen[0][0] = true;
+        walk(0, 0, path);
+    }
+    if (paths.empty()) cout << -1 << "\n";
+    for (const auto& p : paths) cout << p << "\n";
+    return 0;
+}
+
+=== DAY 74 | Word Search in a Grid
+--- statement
+Check whether a word exists in a grid of letters. The word is built from horizontally or vertically adjacent cells, and a cell can be used only once. Print `true` or `false`.
+
+**Input:** `r c`, then `r` strings of length `c`, then the word.
+**Output:** `true` or `false`.
+--- input
+3 4
+ABCE
+SFCS
+ADEE
+ABCCED
+--- output
+true
+--- complexity
+Time: O(r * c * 4^L) | Space: O(L)
+--- code
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+int R, C;
+vector<string> grid;
+string word;
+
+bool dfs(int r, int c, int i) {
+    if (i == (int)word.size()) return true;
+    if (r < 0 || c < 0 || r >= R || c >= C || grid[r][c] != word[i]) return false;
+    char saved = grid[r][c];
+    grid[r][c] = '#';
+    bool found = dfs(r + 1, c, i + 1) || dfs(r - 1, c, i + 1) ||
+                 dfs(r, c + 1, i + 1) || dfs(r, c - 1, i + 1);
+    grid[r][c] = saved;
+    return found;
+}
+
+int main() {
+    cin >> R >> C;
+    grid.resize(R);
+    for (auto& row : grid) cin >> row;
+    cin >> word;
+    for (int r = 0; r < R; r++)
+        for (int c = 0; c < C; c++)
+            if (dfs(r, c, 0)) {
+                cout << "true" << endl;
+                return 0;
+            }
+    cout << "false" << endl;
+    return 0;
+}
+
+=== DAY 75 | Combinations (n choose k)
+--- statement
+Print all combinations of `k` numbers chosen from `1..n` in lexicographic order.
+
+**Input:** two integers `n k`.
+**Output:** one combination per line.
+--- input
+4 2
+--- output
+1 2
+1 3
+1 4
+2 3
+2 4
+3 4
+--- complexity
+Time: O(k * C(n, k)) | Space: O(k)
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void choose(int start, int n, int k, vector<int>& cur) {
+    if ((int)cur.size() == k) {
+        for (int i = 0; i < k; i++) cout << cur[i] << (i + 1 < k ? " " : "\n");
+        return;
+    }
+    for (int x = start; x <= n; x++) {
+        cur.push_back(x);
+        choose(x + 1, n, k, cur);
+        cur.pop_back();
+    }
+}
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+    vector<int> cur;
+    choose(1, n, k, cur);
+    return 0;
+}

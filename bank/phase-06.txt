@@ -1,0 +1,624 @@
+=== DAY 96 | Stack Using an Array
+--- statement
+Implement a stack with a fixed-size array supporting `push x`, `pop` and `top`. For `pop` and `top` print the value, or `EMPTY` if the stack is empty.
+
+**Input:** `q`, then `q` operations.
+**Output:** one line per `pop` / `top`.
+--- input
+6
+push 5
+push 8
+top
+pop
+pop
+pop
+--- output
+8
+8
+5
+EMPTY
+--- complexity
+Time: O(1) per operation | Space: O(capacity)
+--- code
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Stack {
+    int data[100000];
+    int size = 0;
+public:
+    void push(int x) { data[size++] = x; }
+    bool empty() const { return size == 0; }
+    int top() const { return data[size - 1]; }
+    int pop() { return data[--size]; }
+};
+
+int main() {
+    int q;
+    cin >> q;
+    static Stack st;
+    while (q--) {
+        string op;
+        cin >> op;
+        if (op == "push") {
+            int x;
+            cin >> x;
+            st.push(x);
+        } else if (st.empty()) {
+            cout << "EMPTY\n";
+        } else if (op == "pop") {
+            cout << st.pop() << "\n";
+        } else {
+            cout << st.top() << "\n";
+        }
+    }
+    return 0;
+}
+
+=== DAY 97 | Queue Using a Circular Array
+--- statement
+Implement a queue with a circular array supporting `enqueue x`, `dequeue` and `front`. For `dequeue` and `front` print the value, or `EMPTY`.
+
+**Input:** `q`, then `q` operations.
+**Output:** one line per `dequeue` / `front`.
+--- input
+6
+enqueue 1
+enqueue 2
+front
+dequeue
+dequeue
+dequeue
+--- output
+1
+1
+2
+EMPTY
+--- complexity
+Time: O(1) per operation | Space: O(capacity)
+--- code
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Queue {
+    static const int CAP = 100000;
+    int data[CAP];
+    int head = 0, count = 0;
+public:
+    void enqueue(int x) { data[(head + count++) % CAP] = x; }
+    bool empty() const { return count == 0; }
+    int front() const { return data[head]; }
+    int dequeue() {
+        int x = data[head];
+        head = (head + 1) % CAP;
+        count--;
+        return x;
+    }
+};
+
+int main() {
+    int q;
+    cin >> q;
+    static Queue qu;
+    while (q--) {
+        string op;
+        cin >> op;
+        if (op == "enqueue") {
+            int x;
+            cin >> x;
+            qu.enqueue(x);
+        } else if (qu.empty()) {
+            cout << "EMPTY\n";
+        } else if (op == "dequeue") {
+            cout << qu.dequeue() << "\n";
+        } else {
+            cout << qu.front() << "\n";
+        }
+    }
+    return 0;
+}
+
+=== DAY 98 | Valid Parentheses (STL Stack)
+--- statement
+Check whether a string of brackets `()[]{}` is balanced using `std::stack`. Print `true` or `false`.
+
+**Input:** a bracket string.
+**Output:** `true` or `false`.
+--- input
+{[()()]}
+--- output
+true
+--- complexity
+Time: O(n) | Space: O(n)
+--- code
+#include <iostream>
+#include <stack>
+#include <string>
+using namespace std;
+
+int main() {
+    string s;
+    cin >> s;
+    stack<char> st;
+    for (char c : s) {
+        if (c == '(' || c == '[' || c == '{') {
+            st.push(c);
+        } else {
+            if (st.empty()) { cout << "false" << endl; return 0; }
+            char open = st.top();
+            st.pop();
+            if ((c == ')' && open != '(') || (c == ']' && open != '[') || (c == '}' && open != '{')) {
+                cout << "false" << endl;
+                return 0;
+            }
+        }
+    }
+    cout << (st.empty() ? "true" : "false") << endl;
+    return 0;
+}
+
+=== DAY 99 | Reverse a String Using a Stack
+--- statement
+Reverse a word by pushing every character onto a stack and popping them.
+
+**Input:** a word.
+**Output:** the reversed word.
+--- input
+stack
+--- output
+kcats
+--- complexity
+Time: O(n) | Space: O(n)
+--- code
+#include <iostream>
+#include <stack>
+#include <string>
+using namespace std;
+
+int main() {
+    string s, out;
+    cin >> s;
+    stack<char> st;
+    for (char c : s) st.push(c);
+    while (!st.empty()) {
+        out += st.top();
+        st.pop();
+    }
+    cout << out << endl;
+    return 0;
+}
+
+=== DAY 100 | Evaluate a Postfix Expression
+--- statement
+Evaluate a postfix (Reverse Polish) expression. Tokens are integers or `+ - * /` (integer division truncating toward zero), separated by spaces.
+
+**Input:** `n`, then `n` tokens.
+**Output:** the result.
+--- input
+5
+2 1 + 3 *
+--- output
+9
+--- complexity
+Time: O(n) | Space: O(n)
+--- code
+#include <iostream>
+#include <stack>
+#include <string>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    stack<long long> st;
+    for (int i = 0; i < n; i++) {
+        string t;
+        cin >> t;
+        if (t == "+" || t == "-" || t == "*" || t == "/") {
+            long long b = st.top(); st.pop();
+            long long a = st.top(); st.pop();
+            if (t == "+") st.push(a + b);
+            else if (t == "-") st.push(a - b);
+            else if (t == "*") st.push(a * b);
+            else st.push(a / b);
+        } else {
+            st.push(stoll(t));
+        }
+    }
+    cout << st.top() << endl;
+    return 0;
+}
+
+=== DAY 101 | Next Greater Element
+--- statement
+For each element, print the first element to its right that is greater, or `-1`. Use a monotonic stack.
+
+**Input:** `n`, then `n` integers.
+**Output:** `n` values.
+--- input
+5
+4 5 2 25 7
+--- output
+5 25 25 -1 -1
+--- complexity
+Time: O(n) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n), ans(n, -1);
+    for (auto& x : a) cin >> x;
+    stack<int> st;
+    for (int i = n - 1; i >= 0; i--) {
+        while (!st.empty() && st.top() <= a[i]) st.pop();
+        if (!st.empty()) ans[i] = st.top();
+        st.push(a[i]);
+    }
+    for (int i = 0; i < n; i++) cout << ans[i] << (i + 1 < n ? " " : "\n");
+    return 0;
+}
+
+=== DAY 102 | Previous Smaller Element
+--- statement
+For each element, print the nearest element to its left that is strictly smaller, or `-1`.
+
+**Input:** `n`, then `n` integers.
+**Output:** `n` values.
+--- input
+6
+4 5 2 10 8 3
+--- output
+-1 4 -1 2 2 2
+--- complexity
+Time: O(n) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    stack<int> st;
+    for (int i = 0; i < n; i++) {
+        while (!st.empty() && st.top() >= a[i]) st.pop();
+        cout << (st.empty() ? -1 : st.top()) << (i + 1 < n ? " " : "\n");
+        st.push(a[i]);
+    }
+    return 0;
+}
+
+=== DAY 103 | Stock Span Problem
+--- statement
+The span of a day's price is the number of consecutive days (ending today) with price ≤ today's price. Print the span for every day.
+
+**Input:** `n`, then `n` prices.
+**Output:** `n` spans.
+--- input
+7
+100 80 60 70 60 75 85
+--- output
+1 1 1 2 1 4 6
+--- complexity
+Time: O(n) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> p(n);
+    for (auto& x : p) cin >> x;
+    stack<int> st;
+    for (int i = 0; i < n; i++) {
+        while (!st.empty() && p[st.top()] <= p[i]) st.pop();
+        int span = st.empty() ? i + 1 : i - st.top();
+        cout << span << (i + 1 < n ? " " : "\n");
+        st.push(i);
+    }
+    return 0;
+}
+
+=== DAY 104 | Largest Rectangle in a Histogram
+--- statement
+Given bar heights (each width 1), find the area of the largest rectangle in the histogram.
+
+**Input:** `n`, then `n` heights.
+**Output:** the maximum area.
+--- input
+6
+2 1 5 6 2 3
+--- output
+10
+--- complexity
+Time: O(n) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<long long> h(n);
+    for (auto& x : h) cin >> x;
+    h.push_back(0);
+
+    stack<int> st;
+    long long best = 0;
+    for (int i = 0; i <= n; i++) {
+        while (!st.empty() && h[st.top()] >= h[i]) {
+            long long height = h[st.top()];
+            st.pop();
+            long long width = st.empty() ? i : i - st.top() - 1;
+            best = max(best, height * width);
+        }
+        st.push(i);
+    }
+    cout << best << endl;
+    return 0;
+}
+
+=== DAY 105 | Queue Using Two Stacks
+--- statement
+Implement a queue using two stacks, supporting `push x`, `pop` (print the removed value) and `peek` (print the front). Print `EMPTY` when the queue is empty.
+
+**Input:** `q`, then `q` operations.
+**Output:** one line per `pop` / `peek`.
+--- input
+6
+push 1
+push 2
+peek
+pop
+push 3
+pop
+--- output
+1
+1
+2
+--- complexity
+Time: O(1) amortised per operation | Space: O(n)
+--- code
+#include <iostream>
+#include <stack>
+#include <string>
+using namespace std;
+
+stack<int> inbox, outbox;
+
+void moveIfNeeded() {
+    if (outbox.empty()) {
+        while (!inbox.empty()) {
+            outbox.push(inbox.top());
+            inbox.pop();
+        }
+    }
+}
+
+int main() {
+    int q;
+    cin >> q;
+    while (q--) {
+        string op;
+        cin >> op;
+        if (op == "push") {
+            int x;
+            cin >> x;
+            inbox.push(x);
+            continue;
+        }
+        moveIfNeeded();
+        if (outbox.empty()) {
+            cout << "EMPTY\n";
+            continue;
+        }
+        cout << outbox.top() << "\n";
+        if (op == "pop") outbox.pop();
+    }
+    return 0;
+}
+
+=== DAY 106 | Min Stack
+--- statement
+Design a stack that supports `push x`, `pop`, `top` and `getMin` in O(1). Print results of `top` and `getMin`.
+
+**Input:** `q`, then `q` operations.
+**Output:** one line per `top` / `getMin`.
+--- input
+7
+push -2
+push 0
+push -3
+getMin
+pop
+top
+getMin
+--- output
+-3
+0
+-2
+--- complexity
+Time: O(1) per operation | Space: O(n)
+--- code
+#include <iostream>
+#include <stack>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int q;
+    cin >> q;
+    stack<pair<int, int>> st;  // (value, minimum so far)
+    while (q--) {
+        string op;
+        cin >> op;
+        if (op == "push") {
+            int x;
+            cin >> x;
+            int mn = st.empty() ? x : min(x, st.top().second);
+            st.push({x, mn});
+        } else if (op == "pop") {
+            st.pop();
+        } else if (op == "top") {
+            cout << st.top().first << "\n";
+        } else {
+            cout << st.top().second << "\n";
+        }
+    }
+    return 0;
+}
+
+=== DAY 107 | Maximum Sum Subarray of Size K
+--- statement
+Find the maximum sum of any contiguous subarray of exactly `k` elements using a sliding window.
+
+**Input:** `n k`, then `n` integers.
+**Output:** the maximum sum.
+--- input
+7 3
+2 1 5 1 3 2 9
+--- output
+14
+--- complexity
+Time: O(n) | Space: O(1)
+--- code
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+    vector<long long> a(n);
+    for (auto& x : a) cin >> x;
+    long long window = 0;
+    for (int i = 0; i < k; i++) window += a[i];
+    long long best = window;
+    for (int i = k; i < n; i++) {
+        window += a[i] - a[i - k];
+        best = max(best, window);
+    }
+    cout << best << endl;
+    return 0;
+}
+
+=== DAY 108 | Sliding Window Maximum
+--- statement
+For every window of size `k`, print the maximum element. Use a deque of indices.
+
+**Input:** `n k`, then `n` integers.
+**Output:** `n - k + 1` values.
+--- input
+8 3
+1 3 -1 -3 5 3 6 7
+--- output
+3 3 5 5 6 7
+--- complexity
+Time: O(n) | Space: O(k)
+--- code
+#include <iostream>
+#include <vector>
+#include <deque>
+using namespace std;
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+    vector<int> a(n), out;
+    for (auto& x : a) cin >> x;
+    deque<int> dq;
+    for (int i = 0; i < n; i++) {
+        if (!dq.empty() && dq.front() <= i - k) dq.pop_front();
+        while (!dq.empty() && a[dq.back()] <= a[i]) dq.pop_back();
+        dq.push_back(i);
+        if (i >= k - 1) out.push_back(a[dq.front()]);
+    }
+    for (size_t i = 0; i < out.size(); i++) cout << out[i] << (i + 1 < out.size() ? " " : "\n");
+    return 0;
+}
+
+=== DAY 109 | First Negative Number in Every Window
+--- statement
+For every window of size `k`, print the first negative number, or `0` if the window has none.
+
+**Input:** `n k`, then `n` integers.
+**Output:** `n - k + 1` values.
+--- input
+8 3
+12 -1 -7 8 -15 30 16 28
+--- output
+-1 -1 -7 -15 -15 0
+--- complexity
+Time: O(n) | Space: O(k)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+    vector<int> a(n), out;
+    for (auto& x : a) cin >> x;
+    queue<int> negatives;
+    for (int i = 0; i < n; i++) {
+        if (a[i] < 0) negatives.push(i);
+        if (!negatives.empty() && negatives.front() <= i - k) negatives.pop();
+        if (i >= k - 1) out.push_back(negatives.empty() ? 0 : a[negatives.front()]);
+    }
+    for (size_t i = 0; i < out.size(); i++) cout << out[i] << (i + 1 < out.size() ? " " : "\n");
+    return 0;
+}
+
+=== DAY 110 | Longest Substring Without Repeating Characters
+--- statement
+Find the length of the longest substring with all distinct characters using a sliding window.
+
+**Input:** a string (no spaces).
+**Output:** the length.
+--- input
+abcabcbb
+--- output
+3
+--- complexity
+Time: O(n) | Space: O(256)
+--- code
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    string s;
+    cin >> s;
+    vector<int> last(256, -1);
+    int best = 0, start = 0;
+    for (int i = 0; i < (int)s.size(); i++) {
+        unsigned char c = s[i];
+        if (last[c] >= start) start = last[c] + 1;
+        last[c] = i;
+        best = max(best, i - start + 1);
+    }
+    cout << best << endl;
+    return 0;
+}

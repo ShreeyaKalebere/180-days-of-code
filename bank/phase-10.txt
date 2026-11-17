@@ -1,0 +1,703 @@
+=== DAY 161 | Fibonacci with Memoization
+--- statement
+Compute `F(n) mod 1000000007` using top-down recursion with memoization. Compare its speed with Day 57.
+
+**Input:** an integer `n` (0 ≤ n ≤ 10^5).
+**Output:** `F(n) mod 1e9+7`.
+--- input
+50
+--- output
+586268941
+--- complexity
+Time: O(n) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+const long long MOD = 1000000007LL;
+vector<long long> memo;
+
+long long fib(int n) {
+    if (n < 2) return n;
+    if (memo[n] != -1) return memo[n];
+    return memo[n] = (fib(n - 1) + fib(n - 2)) % MOD;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    memo.assign(n + 1, -1);
+    for (int i = 2; i <= n; i++) fib(i);  // fill bottom-up order to keep recursion shallow
+    cout << fib(n) << endl;
+    return 0;
+}
+
+=== DAY 162 | Fibonacci with Tabulation (O(1) Space)
+--- statement
+Compute `F(n) mod 1000000007` bottom-up, keeping only the last two values.
+
+**Input:** an integer `n` (0 ≤ n ≤ 10^7).
+**Output:** `F(n) mod 1e9+7`.
+--- input
+100
+--- output
+687995182
+--- complexity
+Time: O(n) | Space: O(1)
+--- code
+#include <iostream>
+using namespace std;
+
+int main() {
+    const long long MOD = 1000000007LL;
+    long long n;
+    cin >> n;
+    long long a = 0, b = 1;
+    for (long long i = 0; i < n; i++) {
+        long long c = (a + b) % MOD;
+        a = b;
+        b = c;
+    }
+    cout << a << endl;
+    return 0;
+}
+
+=== DAY 163 | Climbing Stairs
+--- statement
+You can climb 1 or 2 steps at a time. In how many distinct ways can you reach step `n`?
+
+**Input:** an integer `n` (1 ≤ n ≤ 90).
+**Output:** the number of ways.
+--- input
+5
+--- output
+8
+--- complexity
+Time: O(n) | Space: O(1)
+--- code
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    long long oneBack = 1, twoBack = 1;  // ways(0) = ways(1) = 1
+    for (int i = 2; i <= n; i++) {
+        long long cur = oneBack + twoBack;
+        twoBack = oneBack;
+        oneBack = cur;
+    }
+    cout << oneBack << endl;
+    return 0;
+}
+
+=== DAY 164 | Min Cost Climbing Stairs
+--- statement
+`cost[i]` is the cost of stepping on stair `i`. You may start at stair 0 or 1 and climb 1 or 2 stairs at a time. Find the minimum cost to reach the top (just past the last stair).
+
+**Input:** `n`, then `n` costs.
+**Output:** the minimum cost.
+--- input
+10
+1 100 1 1 1 100 1 1 100 1
+--- output
+6
+--- complexity
+Time: O(n) | Space: O(1)
+--- code
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> cost(n);
+    for (auto& x : cost) cin >> x;
+    long long prev2 = 0, prev1 = 0;  // min cost to stand at stair i-2, i-1
+    for (int i = 2; i <= n; i++) {
+        long long cur = min(prev1 + cost[i - 1], prev2 + cost[i - 2]);
+        prev2 = prev1;
+        prev1 = cur;
+    }
+    cout << prev1 << endl;
+    return 0;
+}
+
+=== DAY 165 | House Robber
+--- statement
+Houses in a row hold some money. You cannot rob two adjacent houses. Find the maximum amount you can rob.
+
+**Input:** `n`, then `n` amounts.
+**Output:** the maximum.
+--- input
+5
+2 7 9 3 1
+--- output
+12
+--- complexity
+Time: O(n) | Space: O(1)
+--- code
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    long long take = 0, skip = 0;
+    for (int i = 0; i < n; i++) {
+        long long x;
+        cin >> x;
+        long long newTake = skip + x;
+        skip = max(skip, take);
+        take = newTake;
+    }
+    cout << max(take, skip) << endl;
+    return 0;
+}
+
+=== DAY 166 | Maximum Subarray Sum (Kadane's Algorithm)
+--- statement
+Find the largest sum of a non-empty contiguous subarray.
+
+**Input:** `n`, then `n` integers.
+**Output:** the maximum sum.
+--- input
+9
+-2 1 -3 4 -1 2 1 -5 4
+--- output
+6
+--- complexity
+Time: O(n) | Space: O(1)
+--- code
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    long long best, cur;
+    cin >> cur;
+    best = cur;
+    for (int i = 1; i < n; i++) {
+        long long x;
+        cin >> x;
+        cur = max(x, cur + x);
+        best = max(best, cur);
+    }
+    cout << best << endl;
+    return 0;
+}
+
+=== DAY 167 | Coin Change (Minimum Coins)
+--- statement
+Given coin denominations (unlimited supply) and an amount, find the fewest coins that make the amount, or `-1` if impossible. Greedy fails here — use DP.
+
+**Input:** `n amount`, then `n` coin values.
+**Output:** the minimum number of coins.
+--- input
+3 11
+1 2 5
+--- output
+3
+--- complexity
+Time: O(n * amount) | Space: O(amount)
+--- code
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n, amount;
+    cin >> n >> amount;
+    vector<int> coins(n);
+    for (auto& c : coins) cin >> c;
+    const int INF = 1e9;
+    vector<int> dp(amount + 1, INF);
+    dp[0] = 0;
+    for (int a = 1; a <= amount; a++)
+        for (int c : coins)
+            if (c <= a && dp[a - c] != INF) dp[a] = min(dp[a], dp[a - c] + 1);
+    cout << (dp[amount] == INF ? -1 : dp[amount]) << endl;
+    return 0;
+}
+
+=== DAY 168 | Coin Change (Number of Ways)
+--- statement
+Count the number of combinations of coins (unlimited supply, order does not matter) that make the amount.
+
+**Input:** `n amount`, then `n` coin values.
+**Output:** the number of ways.
+--- input
+3 5
+1 2 5
+--- output
+4
+--- complexity
+Time: O(n * amount) | Space: O(amount)
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n, amount;
+    cin >> n >> amount;
+    vector<int> coins(n);
+    for (auto& c : coins) cin >> c;
+    vector<long long> ways(amount + 1, 0);
+    ways[0] = 1;
+    for (int c : coins)
+        for (int a = c; a <= amount; a++)
+            ways[a] += ways[a - c];
+    cout << ways[amount] << endl;
+    return 0;
+}
+
+=== DAY 169 | 0/1 Knapsack
+--- statement
+Each item can be taken at most once. Maximise total value without exceeding capacity `W`.
+
+**Input:** `n W`, then `n` weights, then `n` values.
+**Output:** the maximum value.
+--- input
+4 7
+1 3 4 5
+1 4 5 7
+--- output
+9
+--- complexity
+Time: O(n * W) | Space: O(W)
+--- code
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n, W;
+    cin >> n >> W;
+    vector<int> wt(n), val(n);
+    for (auto& x : wt) cin >> x;
+    for (auto& x : val) cin >> x;
+    vector<long long> dp(W + 1, 0);
+    for (int i = 0; i < n; i++)
+        for (int w = W; w >= wt[i]; w--)  // go backwards so each item is used once
+            dp[w] = max(dp[w], dp[w - wt[i]] + val[i]);
+    cout << dp[W] << endl;
+    return 0;
+}
+
+=== DAY 170 | Rod Cutting (Unbounded Knapsack)
+--- statement
+A rod of length `n` can be cut into pieces; `price[i]` is the price of a piece of length `i + 1`. Find the maximum revenue.
+
+**Input:** `n`, then `n` prices.
+**Output:** the maximum revenue.
+--- input
+8
+1 5 8 9 10 17 17 20
+--- output
+22
+--- complexity
+Time: O(n^2) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<long long> price(n);
+    for (auto& p : price) cin >> p;
+    vector<long long> dp(n + 1, 0);
+    for (int len = 1; len <= n; len++)
+        for (int cut = 1; cut <= len; cut++)
+            dp[len] = max(dp[len], price[cut - 1] + dp[len - cut]);
+    cout << dp[n] << endl;
+    return 0;
+}
+
+=== DAY 171 | Longest Common Subsequence
+--- statement
+Find the length of the longest common subsequence of two strings.
+
+**Input:** two strings.
+**Output:** the LCS length.
+--- input
+abcde ace
+--- output
+3
+--- complexity
+Time: O(n * m) | Space: O(n * m)
+--- code
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    string a, b;
+    cin >> a >> b;
+    int n = a.size(), m = b.size();
+    vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+    for (int i = 1; i <= n; i++)
+        for (int j = 1; j <= m; j++)
+            dp[i][j] = (a[i - 1] == b[j - 1]) ? dp[i - 1][j - 1] + 1 : max(dp[i - 1][j], dp[i][j - 1]);
+    cout << dp[n][m] << endl;
+    return 0;
+}
+
+=== DAY 172 | Longest Increasing Subsequence
+--- statement
+Find the length of the longest strictly increasing subsequence in O(n log n) using patience sorting with `lower_bound`.
+
+**Input:** `n`, then `n` integers.
+**Output:** the LIS length.
+--- input
+8
+10 9 2 5 3 7 101 18
+--- output
+4
+--- complexity
+Time: O(n log n) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> tails;
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        auto it = lower_bound(tails.begin(), tails.end(), x);
+        if (it == tails.end()) tails.push_back(x);
+        else *it = x;
+    }
+    cout << tails.size() << endl;
+    return 0;
+}
+
+=== DAY 173 | Edit Distance
+--- statement
+Find the minimum number of insertions, deletions and replacements needed to turn word `a` into word `b`.
+
+**Input:** two words.
+**Output:** the edit distance.
+--- input
+horse ros
+--- output
+3
+--- complexity
+Time: O(n * m) | Space: O(n * m)
+--- code
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    string a, b;
+    cin >> a >> b;
+    int n = a.size(), m = b.size();
+    vector<vector<int>> dp(n + 1, vector<int>(m + 1));
+    for (int i = 0; i <= n; i++) dp[i][0] = i;
+    for (int j = 0; j <= m; j++) dp[0][j] = j;
+    for (int i = 1; i <= n; i++)
+        for (int j = 1; j <= m; j++) {
+            if (a[i - 1] == b[j - 1]) dp[i][j] = dp[i - 1][j - 1];
+            else dp[i][j] = 1 + min({dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]});
+        }
+    cout << dp[n][m] << endl;
+    return 0;
+}
+
+=== DAY 174 | Unique Paths in a Grid
+--- statement
+A robot starts at the top-left of an `r x c` grid and can only move right or down. How many unique paths reach the bottom-right?
+
+**Input:** two integers `r c`.
+**Output:** the number of paths.
+--- input
+3 7
+--- output
+28
+--- complexity
+Time: O(r * c) | Space: O(c)
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int r, c;
+    cin >> r >> c;
+    vector<long long> row(c, 1);
+    for (int i = 1; i < r; i++)
+        for (int j = 1; j < c; j++)
+            row[j] += row[j - 1];
+    cout << row[c - 1] << endl;
+    return 0;
+}
+
+=== DAY 175 | Longest Palindromic Subsequence
+--- statement
+Find the length of the longest subsequence of a string that is a palindrome.
+
+**Input:** a word.
+**Output:** the length.
+--- input
+bbbab
+--- output
+4
+--- complexity
+Time: O(n^2) | Space: O(n^2)
+--- code
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    string s;
+    cin >> s;
+    int n = s.size();
+    vector<vector<int>> dp(n, vector<int>(n, 0));
+    for (int i = n - 1; i >= 0; i--) {
+        dp[i][i] = 1;
+        for (int j = i + 1; j < n; j++) {
+            if (s[i] == s[j]) dp[i][j] = dp[i + 1][j - 1] + 2;
+            else dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);
+        }
+    }
+    cout << dp[0][n - 1] << endl;
+    return 0;
+}
+
+=== DAY 176 | Revision: Product of Array Except Self
+--- statement
+Arrays and strings revision. For each index, print the product of all other elements without using division, in O(n).
+
+**Input:** `n`, then `n` integers.
+**Output:** `n` products.
+--- input
+4
+1 2 3 4
+--- output
+24 12 8 6
+--- complexity
+Time: O(n) | Space: O(1) extra (besides the output)
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<long long> a(n), out(n, 1);
+    for (auto& x : a) cin >> x;
+    long long prefix = 1;
+    for (int i = 0; i < n; i++) {
+        out[i] = prefix;
+        prefix *= a[i];
+    }
+    long long suffix = 1;
+    for (int i = n - 1; i >= 0; i--) {
+        out[i] *= suffix;
+        suffix *= a[i];
+    }
+    for (int i = 0; i < n; i++) cout << out[i] << (i + 1 < n ? " " : "\n");
+    return 0;
+}
+
+=== DAY 177 | Revision: Search a 2D Matrix
+--- statement
+Searching revision. Each row of the matrix is sorted and the first value of each row is greater than the last value of the previous row. Find `target` with one binary search over all cells. Print `true` or `false`.
+
+**Input:** `r c target`, then the matrix.
+**Output:** `true` or `false`.
+--- input
+3 4 16
+1 3 5 7
+10 11 16 20
+23 30 34 60
+--- output
+true
+--- complexity
+Time: O(log(r * c)) | Space: O(1)
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int r, c, target;
+    cin >> r >> c >> target;
+    vector<vector<int>> m(r, vector<int>(c));
+    for (auto& row : m) for (auto& x : row) cin >> x;
+    int lo = 0, hi = r * c - 1;
+    while (lo <= hi) {
+        int mid = lo + (hi - lo) / 2;
+        int v = m[mid / c][mid % c];
+        if (v == target) {
+            cout << "true" << endl;
+            return 0;
+        }
+        if (v < target) lo = mid + 1;
+        else hi = mid - 1;
+    }
+    cout << "false" << endl;
+    return 0;
+}
+
+=== DAY 178 | Revision: Rotting Oranges
+--- statement
+Trees and graphs revision. In a grid, `0` = empty, `1` = fresh orange, `2` = rotten orange. Every minute, fresh oranges next to rotten ones (up/down/left/right) rot. Print the minutes until no fresh orange remains, or `-1` if impossible. Use multi-source BFS.
+
+**Input:** `r c`, then the grid.
+**Output:** the minutes.
+--- input
+3 3
+2 1 1
+1 1 0
+0 1 1
+--- output
+4
+--- complexity
+Time: O(r * c) | Space: O(r * c)
+--- code
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+int main() {
+    int r, c;
+    cin >> r >> c;
+    vector<vector<int>> g(r, vector<int>(c));
+    queue<pair<int, int>> q;
+    int fresh = 0;
+    for (int i = 0; i < r; i++)
+        for (int j = 0; j < c; j++) {
+            cin >> g[i][j];
+            if (g[i][j] == 2) q.push({i, j});
+            if (g[i][j] == 1) fresh++;
+        }
+    const int dr[4] = {1, -1, 0, 0}, dc[4] = {0, 0, 1, -1};
+    int minutes = 0;
+    while (!q.empty() && fresh > 0) {
+        int size = q.size();
+        for (int s = 0; s < size; s++) {
+            auto [x, y] = q.front();
+            q.pop();
+            for (int k = 0; k < 4; k++) {
+                int nx = x + dr[k], ny = y + dc[k];
+                if (nx >= 0 && ny >= 0 && nx < r && ny < c && g[nx][ny] == 1) {
+                    g[nx][ny] = 2;
+                    fresh--;
+                    q.push({nx, ny});
+                }
+            }
+        }
+        minutes++;
+    }
+    cout << (fresh == 0 ? minutes : -1) << endl;
+    return 0;
+}
+
+=== DAY 179 | Revision: Partition Equal Subset Sum
+--- statement
+Dynamic programming revision. Can the array be split into two subsets with equal sums? Print `true` or `false`.
+
+**Input:** `n`, then `n` positive integers.
+**Output:** `true` or `false`.
+--- input
+4
+1 5 11 5
+--- output
+true
+--- complexity
+Time: O(n * sum) | Space: O(sum)
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    int total = 0;
+    for (auto& x : a) {
+        cin >> x;
+        total += x;
+    }
+    if (total % 2 != 0) {
+        cout << "false" << endl;
+        return 0;
+    }
+    int half = total / 2;
+    vector<bool> can(half + 1, false);
+    can[0] = true;
+    for (int x : a)
+        for (int s = half; s >= x; s--)
+            if (can[s - x]) can[s] = true;
+    cout << (can[half] ? "true" : "false") << endl;
+    return 0;
+}
+
+=== DAY 180 | Final Assessment: Trapping Rain Water
+--- statement
+Final challenge — it combines arrays, two pointers and careful reasoning. Given bar heights, compute how much rain water is trapped between the bars. Then write your reflection on the whole 180 days in this README.
+
+**Input:** `n`, then `n` heights.
+**Output:** the trapped water.
+--- input
+12
+0 1 0 2 1 0 1 3 2 1 2 1
+--- output
+6
+--- complexity
+Time: O(n) | Space: O(1)
+--- code
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<long long> h(n);
+    for (auto& x : h) cin >> x;
+    int l = 0, r = n - 1;
+    long long leftMax = 0, rightMax = 0, water = 0;
+    while (l < r) {
+        if (h[l] < h[r]) {
+            leftMax = max(leftMax, h[l]);
+            water += leftMax - h[l];
+            l++;
+        } else {
+            rightMax = max(rightMax, h[r]);
+            water += rightMax - h[r];
+            r--;
+        }
+    }
+    cout << water << endl;
+    return 0;
+}

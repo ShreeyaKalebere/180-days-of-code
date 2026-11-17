@@ -1,130 +1,91 @@
 name: Daily C++ Challenge
 
 on:
-  push:
-    branches:
-      - main
-
-  pull_request:
-    branches:
-      - main
-
   schedule:
-    - cron: "30 3 * * *"
-
+    - cron: "30 3 * * *"   # 09:00 IST - new problem + reminder issue
+    - cron: "30 16 * * *"  # 22:00 IST - if not solved yet, add the reference solution
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "What to run"
+        type: choice
+        options: [morning, evening, backfill]
+        default: morning
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: write
+  issues: write
+
+concurrency:
+  group: daily-challenge
+  cancel-in-progress: false
 
 jobs:
-  create-daily-challenge:
+  daily:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: main
 
-      - name: Create daily files
-        shell: bash
+      - name: Pick mode
+        id: mode
         run: |
-          LAST_DAY=$(find daily -maxdepth 1 -type d -name 'day-[0-9][0-9][0-9]' -printf '%f\n' | sed 's/day-//' | sort -n | tail -1)
-
-          if [ -z "$LAST_DAY" ]; then
-            DAY=1
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "mode=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event.schedule }}" = "30 3 * * *" ]; then
+            echo "mode=morning" >> "$GITHUB_OUTPUT"
           else
-            DAY=$((10#$LAST_DAY + 1))
+            echo "mode=evening" >> "$GITHUB_OUTPUT"
           fi
 
-          if [ "$DAY" -gt 180 ]; then
-            echo "All 180 days are complete!"
-            exit 0
-          fi
+      - name: Run daily script
+        id: run
+        run: python3 scripts/daily.py ${{ steps.mode.outputs.mode }}
 
-          FOLDER=$(printf "daily/day-%03d" "$DAY")
-
-          if [ -d "$FOLDER" ]; then
-            echo "$FOLDER already exists. Skipping creation."
-            exit 0
-          fi
-
-          mkdir -p "$FOLDER"
-
-          cat > "$FOLDER/README.md" <<EOF
-          # Day $DAY: C++ and DSA Challenge
-
-          ## Objective
-          Practice C++ and Data Structures and Algorithms.
-
-          ## Problem Statement
-          Add today's problem statement here.
-
-          ## Approach
-          Explain your approach here.
-
-          ## Complexity
-          - Time: To be analyzed.
-          - Space: To be analyzed.
-
-          ## Key Learnings
-          Record what you learned today.
-
-          ## Completion Checklist
-          - [ ] Understand the problem.
-          - [ ] Implement the solution.
-          - [ ] Compile and test the solution.
-          - [ ] Analyze complexity.
-          - [ ] Push the solution to GitHub.
-          EOF
-
-          cat > "$FOLDER/solution.cpp" <<'EOF'
-          #include <iostream>
-          using namespace std;
-
-          int main() {
-              // Write your solution here.
-              return 0;
-          }
-          EOF
-
-          echo "Created $FOLDER successfully."
-
-      - name: Commit and push daily files
-        shell: bash
+      - name: Commit and push
+        if: steps.run.outputs.changed == 'true'
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Commit as YOU (not github-actions[bot]) so it counts on your contribution graph.
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+          git add -A daily/
+          git commit -m "${{ steps.run.outputs.message }}"
+          git push origin HEAD:main
 
-          git add daily/
+      - name: Close old reminders
+        if: steps.mode.outputs.mode != 'backfill'
+        run: |
+          for n in $(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "Daily reminder in:title" --json number --jq '.[].number'); do
+            gh issue close "$n" --repo "$GITHUB_REPOSITORY" --comment "Closed automatically."
+          done
 
-          if ! git diff --cached --quiet; then
-            git commit -m "Add next daily C++ challenge"
-            git push origin HEAD:main
-          else
-            echo "No new files to commit."
-          fi
+      - name: Open today's reminder
+        if: steps.mode.outputs.mode == 'morning' && steps.run.outputs.changed == 'true'
+        run: |
+          DAY=$(printf "%03d" "${{ steps.run.outputs.day }}")
+          gh issue create --repo "$GITHUB_REPOSITORY" \
+            --assignee "${{ github.repository_owner }}" \
+            --title "Daily reminder - Day ${{ steps.run.outputs.day }}: ${{ steps.run.outputs.title }}" \
+            --body "Today's problem is ready: [daily/day-$DAY](https://github.com/$GITHUB_REPOSITORY/tree/main/daily/day-$DAY)
 
-  check-cpp:
-    if: github.event_name != 'schedule' && github.event_name != 'workflow_dispatch'
+          1. \`git pull\`
+          2. Solve it in \`daily/day-$DAY/solution.cpp\`
+          3. \`git add . && git commit -m \"Day ${{ steps.run.outputs.day }}: solved\" && git push\`
+
+          No time today? Don't worry - at 10 PM IST a reference solution is added automatically so your streak continues."
+
+  test:
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install GCC
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y g++
-
-      - name: Compile Day 1 solution
-        run: |
-          g++ -std=c++17 -Wall -Wextra \
-            daily/day-001/solution.cpp \
-            -o solution
-
-      - name: Run Day 1 solution
-        run: ./solution
+      - uses: actions/checkout@v4
+      - name: Compile and test every solution
+        run: python3 scripts/daily.py test

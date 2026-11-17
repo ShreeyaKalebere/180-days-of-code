@@ -1,0 +1,566 @@
+=== DAY 131 | Two Sum with a Hash Map
+--- statement
+In an unsorted array, find indices `i < j` (0-based) such that `a[i] + a[j] = target`, using an `unordered_map`. Exactly one answer exists.
+
+**Input:** `n target`, then `n` integers.
+**Output:** `i j`.
+--- input
+4 9
+2 7 11 15
+--- output
+0 1
+--- complexity
+Time: O(n) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+int main() {
+    int n;
+    long long target;
+    cin >> n >> target;
+    vector<long long> a(n);
+    for (auto& x : a) cin >> x;
+    unordered_map<long long, int> seen;
+    for (int j = 0; j < n; j++) {
+        auto it = seen.find(target - a[j]);
+        if (it != seen.end()) {
+            cout << it->second << " " << j << endl;
+            return 0;
+        }
+        seen[a[j]] = j;
+    }
+    cout << "-1 -1" << endl;
+    return 0;
+}
+
+=== DAY 132 | Count Distinct Elements
+--- statement
+Count how many distinct values the array contains using an `unordered_set`.
+
+**Input:** `n`, then `n` integers.
+**Output:** the count.
+--- input
+8
+4 1 4 2 7 1 9 2
+--- output
+5
+--- complexity
+Time: O(n) average | Space: O(n)
+--- code
+#include <iostream>
+#include <unordered_set>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    unordered_set<int> s;
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        s.insert(x);
+    }
+    cout << s.size() << endl;
+    return 0;
+}
+
+=== DAY 133 | Longest Consecutive Sequence
+--- statement
+Find the length of the longest run of consecutive integers (in any order in the array) in O(n) using a hash set.
+
+**Input:** `n`, then `n` integers.
+**Output:** the length.
+--- input
+6
+100 4 200 1 3 2
+--- output
+4
+--- complexity
+Time: O(n) average | Space: O(n)
+--- code
+#include <iostream>
+#include <unordered_set>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    unordered_set<int> s(a.begin(), a.end());
+    int best = 0;
+    for (int x : s) {
+        if (s.count(x - 1)) continue;  // x is not the start of a run
+        int len = 1;
+        while (s.count(x + len)) len++;
+        best = max(best, len);
+    }
+    cout << best << endl;
+    return 0;
+}
+
+=== DAY 134 | Subarray Sum Equals K
+--- statement
+Count contiguous subarrays whose sum is exactly `k` using prefix sums and a hash map.
+
+**Input:** `n k`, then `n` integers.
+**Output:** the count.
+--- input
+5 3
+1 2 1 2 1
+--- output
+4
+--- complexity
+Time: O(n) | Space: O(n)
+--- code
+#include <iostream>
+#include <unordered_map>
+using namespace std;
+
+int main() {
+    int n;
+    long long k;
+    cin >> n >> k;
+    unordered_map<long long, long long> freq;
+    freq[0] = 1;
+    long long prefix = 0, count = 0;
+    for (int i = 0; i < n; i++) {
+        long long x;
+        cin >> x;
+        prefix += x;
+        auto it = freq.find(prefix - k);
+        if (it != freq.end()) count += it->second;
+        freq[prefix]++;
+    }
+    cout << count << endl;
+    return 0;
+}
+
+=== DAY 135 | Group Anagrams
+--- statement
+Group words that are anagrams of each other. Inside a group, keep words sorted; print groups sorted by their first word.
+
+**Input:** `n`, then `n` lowercase words.
+**Output:** one group per line.
+--- input
+6
+eat tea tan ate nat bat
+--- output
+ate eat tea
+bat
+nat tan
+--- complexity
+Time: O(n * L log L) | Space: O(n * L)
+--- code
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    map<string, vector<string>> groups;
+    for (int i = 0; i < n; i++) {
+        string w;
+        cin >> w;
+        string key = w;
+        sort(key.begin(), key.end());
+        groups[key].push_back(w);
+    }
+    vector<vector<string>> out;
+    for (auto& [key, words] : groups) {
+        sort(words.begin(), words.end());
+        out.push_back(words);
+    }
+    sort(out.begin(), out.end());
+    for (const auto& g : out)
+        for (size_t i = 0; i < g.size(); i++) cout << g[i] << (i + 1 < g.size() ? " " : "\n");
+    return 0;
+}
+
+=== DAY 136 | Top K Frequent Elements
+--- statement
+Return the `k` most frequent elements. Sort by frequency (high first), breaking ties by smaller value first.
+
+**Input:** `n k`, then `n` integers.
+**Output:** `k` values.
+--- input
+8 2
+1 1 1 2 2 3 3 4
+--- output
+1 2
+--- complexity
+Time: O(n log n) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+    unordered_map<int, int> freq;
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        freq[x]++;
+    }
+    vector<pair<int, int>> items(freq.begin(), freq.end());
+    sort(items.begin(), items.end(), [](const pair<int, int>& a, const pair<int, int>& b) {
+        if (a.second != b.second) return a.second > b.second;
+        return a.first < b.first;
+    });
+    for (int i = 0; i < k; i++) cout << items[i].first << (i + 1 < k ? " " : "\n");
+    return 0;
+}
+
+=== DAY 137 | Majority Element (Boyer-Moore Voting)
+--- statement
+Find the element that appears more than `n / 2` times (it is guaranteed to exist) in O(1) extra space.
+
+**Input:** `n`, then `n` integers.
+**Output:** the majority element.
+--- input
+7
+2 2 1 1 1 2 2
+--- output
+2
+--- complexity
+Time: O(n) | Space: O(1)
+--- code
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    int candidate = 0, votes = 0;
+    for (int i = 0; i < n; i++) {
+        int x;
+        cin >> x;
+        if (votes == 0) candidate = x;
+        votes += (x == candidate) ? 1 : -1;
+    }
+    cout << candidate << endl;
+    return 0;
+}
+
+=== DAY 138 | Minimum Coins (Greedy, Indian Currency)
+--- statement
+Using notes/coins of 2000, 500, 200, 100, 50, 20, 10, 5, 2 and 1, pay amount `v` with the fewest pieces. Print the pieces used, largest first.
+
+**Input:** an integer `v`.
+**Output:** the pieces, separated by spaces.
+--- input
+93
+--- output
+50 20 20 2 1
+--- complexity
+Time: O(number of pieces) | Space: O(1)
+--- code
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    long long v;
+    cin >> v;
+    const int coins[] = {2000, 500, 200, 100, 50, 20, 10, 5, 2, 1};
+    vector<int> used;
+    for (int c : coins) {
+        while (v >= c) {
+            v -= c;
+            used.push_back(c);
+        }
+    }
+    for (size_t i = 0; i < used.size(); i++) cout << used[i] << (i + 1 < used.size() ? " " : "\n");
+    return 0;
+}
+
+=== DAY 139 | Activity Selection
+--- statement
+Given start and end times of `n` activities, select the maximum number of non-overlapping activities (an activity can start exactly when the previous one ends).
+
+**Input:** `n`, then `n` lines of `start end`.
+**Output:** the maximum count.
+--- input
+6
+1 2
+3 4
+0 6
+5 7
+8 9
+5 9
+--- output
+4
+--- complexity
+Time: O(n log n) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<pair<int, int>> acts(n);  // (end, start)
+    for (auto& a : acts) cin >> a.second >> a.first;
+    sort(acts.begin(), acts.end());
+    int count = 0, lastEnd = -1;
+    for (auto& [end, start] : acts) {
+        if (start >= lastEnd) {
+            count++;
+            lastEnd = end;
+        }
+    }
+    cout << count << endl;
+    return 0;
+}
+
+=== DAY 140 | Merge Overlapping Intervals
+--- statement
+Merge all overlapping intervals and print the result sorted by start.
+
+**Input:** `n`, then `n` lines of `start end`.
+**Output:** one merged interval per line.
+--- input
+4
+1 3
+8 10
+2 6
+15 18
+--- output
+1 6
+8 10
+15 18
+--- complexity
+Time: O(n log n) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<pair<int, int>> v(n);
+    for (auto& p : v) cin >> p.first >> p.second;
+    sort(v.begin(), v.end());
+    vector<pair<int, int>> merged;
+    for (auto& p : v) {
+        if (merged.empty() || p.first > merged.back().second) merged.push_back(p);
+        else merged.back().second = max(merged.back().second, p.second);
+    }
+    for (auto& p : merged) cout << p.first << " " << p.second << "\n";
+    return 0;
+}
+
+=== DAY 141 | Minimum Railway Platforms
+--- statement
+Given arrival and departure times of trains (as HHMM integers), find the minimum number of platforms needed so no train waits. A train arriving at the same time another departs needs a separate platform.
+
+**Input:** `n`, then `n` arrival times, then `n` departure times.
+**Output:** the minimum platforms.
+--- input
+6
+900 940 950 1100 1500 1800
+910 1200 1120 1130 1900 2000
+--- output
+3
+--- complexity
+Time: O(n log n) | Space: O(1) extra
+--- code
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> arr(n), dep(n);
+    for (auto& x : arr) cin >> x;
+    for (auto& x : dep) cin >> x;
+    sort(arr.begin(), arr.end());
+    sort(dep.begin(), dep.end());
+    int i = 0, j = 0, current = 0, best = 0;
+    while (i < n) {
+        if (arr[i] <= dep[j]) {
+            current++;
+            i++;
+        } else {
+            current--;
+            j++;
+        }
+        best = max(best, current);
+    }
+    cout << best << endl;
+    return 0;
+}
+
+=== DAY 142 | Fractional Knapsack
+--- statement
+Given items with value and weight and a bag of capacity `W`, maximise value; you may take fractions of items. Print the answer with 2 decimals.
+
+**Input:** `n W`, then `n` lines of `value weight`.
+**Output:** the maximum value.
+--- input
+3 50
+60 10
+100 20
+120 30
+--- output
+240.00
+--- complexity
+Time: O(n log n) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <iomanip>
+using namespace std;
+
+int main() {
+    int n;
+    double W;
+    cin >> n >> W;
+    vector<pair<double, double>> items(n);  // value, weight
+    for (auto& it : items) cin >> it.first >> it.second;
+    sort(items.begin(), items.end(), [](const pair<double, double>& a, const pair<double, double>& b) {
+        return a.first / a.second > b.first / b.second;
+    });
+    double total = 0;
+    for (auto& [value, weight] : items) {
+        if (W <= 0) break;
+        double take = min(weight, W);
+        total += value * (take / weight);
+        W -= take;
+    }
+    cout << fixed << setprecision(2) << total << endl;
+    return 0;
+}
+
+=== DAY 143 | Jump Game
+--- statement
+Each element is your maximum jump length from that position. Starting at index 0, can you reach the last index? Print `true` or `false`.
+
+**Input:** `n`, then `n` non-negative integers.
+**Output:** `true` or `false`.
+--- input
+5
+3 2 1 0 4
+--- output
+false
+--- complexity
+Time: O(n) | Space: O(1)
+--- code
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto& x : a) cin >> x;
+    int reach = 0;
+    for (int i = 0; i < n; i++) {
+        if (i > reach) {
+            cout << "false" << endl;
+            return 0;
+        }
+        reach = max(reach, i + a[i]);
+    }
+    cout << "true" << endl;
+    return 0;
+}
+
+=== DAY 144 | Non-Overlapping Intervals
+--- statement
+Find the minimum number of intervals to remove so that the rest do not overlap (touching at an endpoint is fine).
+
+**Input:** `n`, then `n` lines of `start end`.
+**Output:** the minimum removals.
+--- input
+4
+1 2
+2 3
+3 4
+1 3
+--- output
+1
+--- complexity
+Time: O(n log n) | Space: O(n)
+--- code
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<pair<int, int>> v(n);  // (end, start)
+    for (auto& p : v) cin >> p.second >> p.first;
+    sort(v.begin(), v.end());
+    int kept = 0;
+    long long lastEnd = LLONG_MIN;
+    for (auto& [end, start] : v) {
+        if (start >= lastEnd) {
+            kept++;
+            lastEnd = end;
+        }
+    }
+    cout << n - kept << endl;
+    return 0;
+}
+
+=== DAY 145 | Assign Cookies
+--- statement
+Each child `i` has a greed factor `g[i]`, each cookie `j` has size `s[j]`. A child is content if they get a cookie with `s[j] >= g[i]`. Maximise content children (one cookie each).
+
+**Input:** `n m`, then `n` greed factors, then `m` cookie sizes.
+**Output:** the number of content children.
+--- input
+3 2
+1 2 3
+1 1
+--- output
+1
+--- complexity
+Time: O(n log n + m log m) | Space: O(1) extra
+--- code
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<int> g(n), s(m);
+    for (auto& x : g) cin >> x;
+    for (auto& x : s) cin >> x;
+    sort(g.begin(), g.end());
+    sort(s.begin(), s.end());
+    int child = 0;
+    for (int j = 0; j < m && child < n; j++) {
+        if (s[j] >= g[child]) child++;
+    }
+    cout << child << endl;
+    return 0;
+}
