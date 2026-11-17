@@ -1,24 +1,31 @@
-# Day 2: Variables and Data Types
-
-## Objective
-Learn and practice: Variables and Data Types.
+# Day 2: Sum and Average
 
 ## Problem Statement
-Write the problem statement here.
+Read two integers `a` and `b`. Print their sum on the first line and their average (with exactly 2 decimal places) on the second line.
+
+**Input:** two integers `a b`.
+**Output:** sum, then average.
+
+### Sample Input
+```
+7 4
+```
+
+### Sample Output
+```
+11
+5.50
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(1)
+- Space: O(1)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Commit the solution to GitHub.
+## Status
+✅ Solved by me.

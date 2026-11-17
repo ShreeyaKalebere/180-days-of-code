@@ -1,24 +1,30 @@
-# Day 19: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 19: Decimal to Binary
 
 ## Problem Statement
-Add today's problem statement here.
+Convert a non-negative decimal integer to its binary representation.
+
+**Input:** an integer `n`.
+**Output:** binary string.
+
+### Sample Input
+```
+45
+```
+
+### Sample Output
+```
+101101
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(log n)
+- Space: O(log n)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

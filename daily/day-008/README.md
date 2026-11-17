@@ -1,24 +1,30 @@
-# Day 8: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 8: Maximum of Three Using a Function
 
 ## Problem Statement
-Add today's problem statement here.
+Write a function `maxOfThree(a, b, c)` that returns the largest of three integers. Read three integers and print the result.
+
+**Input:** three integers.
+**Output:** the maximum.
+
+### Sample Input
+```
+12 45 7
+```
+
+### Sample Output
+```
+45
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(1)
+- Space: O(1)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

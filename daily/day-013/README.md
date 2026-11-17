@@ -1,24 +1,30 @@
-# Day 13: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 13: Factorial Using Recursion
 
 ## Problem Statement
-Add today's problem statement here.
+Write a recursive function to compute `n!`. Read `n` and print `n!`.
+
+**Input:** an integer `n` (0 ≤ n ≤ 20).
+**Output:** `n!`.
+
+### Sample Input
+```
+6
+```
+
+### Sample Output
+```
+720
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(n)
+- Space: O(n) recursion stack
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

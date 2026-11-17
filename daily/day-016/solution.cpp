@@ -1,7 +1,20 @@
+// Day 16: Check Prime Number
+// Reference solution (added automatically).
+
 #include <iostream>
 using namespace std;
 
+bool isPrime(long long n) {
+    if (n < 2) return false;
+    for (long long i = 2; i * i <= n; i++) {
+        if (n % i == 0) return false;
+    }
+    return true;
+}
+
 int main() {
-    // Write your solution here.
+    long long n;
+    cin >> n;
+    cout << (isPrime(n) ? "Prime" : "Not Prime") << endl;
     return 0;
 }

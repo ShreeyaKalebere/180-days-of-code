@@ -1,7 +1,17 @@
+// Day 13: Factorial Using Recursion
+// Reference solution (added automatically).
+
 #include <iostream>
 using namespace std;
 
+long long factorial(int n) {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1);
+}
+
 int main() {
-    // Write your solution here.
+    int n;
+    cin >> n;
+    cout << factorial(n) << endl;
     return 0;
 }

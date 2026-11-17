@@ -1,24 +1,30 @@
-# Day 18: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 18: Sieve of Eratosthenes
 
 ## Problem Statement
-Add today's problem statement here.
+Print all prime numbers up to `n` using the Sieve of Eratosthenes.
+
+**Input:** an integer `n` (2 ≤ n ≤ 10^6).
+**Output:** primes separated by spaces.
+
+### Sample Input
+```
+30
+```
+
+### Sample Output
+```
+2 3 5 7 11 13 17 19 23 29
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(n log log n)
+- Space: O(n)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

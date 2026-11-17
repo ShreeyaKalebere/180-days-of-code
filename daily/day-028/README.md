@@ -1,24 +1,34 @@
-# Day 28: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 28: Transpose of a Matrix
 
 ## Problem Statement
-Add today's problem statement here.
+Read an `r x c` matrix and print its transpose (`c x r`).
+
+**Input:** `r c`, then the matrix.
+**Output:** the transposed matrix.
+
+### Sample Input
+```
+2 3
+1 2 3
+4 5 6
+```
+
+### Sample Output
+```
+1 4
+2 5
+3 6
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(r * c)
+- Space: O(r * c)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

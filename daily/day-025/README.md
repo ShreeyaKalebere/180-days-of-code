@@ -1,24 +1,31 @@
-# Day 25: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 25: Rotate Array Left by K
 
 ## Problem Statement
-Add today's problem statement here.
+Rotate an array to the left by `k` positions using the reversal algorithm.
+
+**Input:** `n k`, then `n` integers.
+**Output:** the rotated array.
+
+### Sample Input
+```
+7 3
+1 2 3 4 5 6 7
+```
+
+### Sample Output
+```
+4 5 6 7 1 2 3
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(n)
+- Space: O(1) extra
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

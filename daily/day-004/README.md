@@ -1,24 +1,34 @@
-# Day 4: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 4: Arithmetic Operators
 
 ## Problem Statement
-Add today's problem statement here.
+Read two positive integers `a` and `b`. Print `a+b`, `a-b`, `a*b`, `a/b` (integer division) and `a%b`, each on its own line.
+
+**Input:** two integers `a b` (b > 0).
+**Output:** five lines.
+
+### Sample Input
+```
+17 5
+```
+
+### Sample Output
+```
+22
+12
+85
+3
+2
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(1)
+- Space: O(1)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

@@ -1,24 +1,30 @@
-# Day 17: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 17: GCD and LCM
 
 ## Problem Statement
-Add today's problem statement here.
+Read two positive integers and print their GCD (using the Euclidean algorithm) and LCM.
+
+**Input:** two integers `a b`.
+**Output:** `gcd lcm` on one line.
+
+### Sample Input
+```
+12 18
+```
+
+### Sample Output
+```
+6 36
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(log(min(a, b)))
+- Space: O(1)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

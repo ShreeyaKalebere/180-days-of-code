@@ -1,24 +1,30 @@
-# Day 31: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 31: Palindrome String
 
 ## Problem Statement
-Add today's problem statement here.
+Check whether a string is a palindrome, ignoring case and non-alphanumeric characters. Print `true` or `false`.
+
+**Input:** one line of text.
+**Output:** `true` or `false`.
+
+### Sample Input
+```
+A man, a plan, a canal: Panama
+```
+
+### Sample Output
+```
+true
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(n)
+- Space: O(1)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

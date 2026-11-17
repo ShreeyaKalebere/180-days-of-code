@@ -1,24 +1,31 @@
-# Day 27: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 27: Move Zeros to the End
 
 ## Problem Statement
-Add today's problem statement here.
+Move all zeros in the array to the end while keeping the order of the non-zero elements.
+
+**Input:** `n`, then `n` integers.
+**Output:** the modified array.
+
+### Sample Input
+```
+7
+0 1 0 3 12 0 5
+```
+
+### Sample Output
+```
+1 3 12 5 0 0 0
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(n)
+- Space: O(1) extra
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

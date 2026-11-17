@@ -1,7 +1,18 @@
+// Day 7: Star Triangle Pattern
+// Reference solution (added automatically).
+
 #include <iostream>
 using namespace std;
 
 int main() {
-    // Write your solution here.
+    int n;
+    cin >> n;
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= i; j++) {
+            if (j > 1) cout << " ";
+            cout << "*";
+        }
+        cout << "\n";
+    }
     return 0;
 }

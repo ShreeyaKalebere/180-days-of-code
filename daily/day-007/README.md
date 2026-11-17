@@ -1,24 +1,33 @@
-# Day 7: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 7: Star Triangle Pattern
 
 ## Problem Statement
-Add today's problem statement here.
+Read `n` and print a right-angled triangle of stars with `n` rows. Row `i` has `i` stars separated by spaces.
+
+**Input:** an integer `n`.
+**Output:** `n` lines.
+
+### Sample Input
+```
+4
+```
+
+### Sample Output
+```
+*
+* *
+* * *
+* * * *
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(n^2)
+- Space: O(1)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

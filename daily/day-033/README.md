@@ -1,24 +1,32 @@
-# Day 33: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 33: Character Frequency
 
 ## Problem Statement
-Add today's problem statement here.
+Read a lowercase word and print each character that appears, in alphabetical order, with its count.
+
+**Input:** a lowercase string.
+**Output:** lines of `char count`.
+
+### Sample Input
+```
+banana
+```
+
+### Sample Output
+```
+a 3
+b 1
+n 2
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(n)
+- Space: O(26)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

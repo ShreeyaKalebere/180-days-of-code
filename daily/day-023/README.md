@@ -1,24 +1,31 @@
-# Day 23: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 23: Second Largest Element
 
 ## Problem Statement
-Add today's problem statement here.
+Find the second largest **distinct** element in an array in a single pass. Print `-1` if it does not exist.
+
+**Input:** `n`, then `n` integers.
+**Output:** the second largest value.
+
+### Sample Input
+```
+6
+10 5 10 8 3 8
+```
+
+### Sample Output
+```
+8
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(n)
+- Space: O(1) extra
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

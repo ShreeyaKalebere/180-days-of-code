@@ -1,24 +1,31 @@
-# Day 38: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 38: First and Last Occurrence
 
 ## Problem Statement
-Add today's problem statement here.
+In a sorted array, find the first and last index of `target` using binary search. Print `-1 -1` if it is absent.
+
+**Input:** `n target`, then `n` sorted integers.
+**Output:** `first last`.
+
+### Sample Input
+```
+8 5
+1 3 5 5 5 5 7 9
+```
+
+### Sample Output
+```
+2 5
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(log n)
+- Space: O(1)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

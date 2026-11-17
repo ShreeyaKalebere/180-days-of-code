@@ -1,24 +1,30 @@
-# Day 9: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 9: Power Function
 
 ## Problem Statement
-Add today's problem statement here.
+Write a function `power(base, exp)` that returns `base^exp` using a loop (no `pow`). Read `base` and `exp` and print the answer.
+
+**Input:** two integers `base exp` (0 ≤ exp ≤ 30).
+**Output:** `base^exp`.
+
+### Sample Input
+```
+3 5
+```
+
+### Sample Output
+```
+243
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(exp)
+- Space: O(1)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

@@ -1,24 +1,30 @@
-# Day 16: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 16: Check Prime Number
 
 ## Problem Statement
-Add today's problem statement here.
+Read `n` and print `Prime` if it is a prime number, otherwise `Not Prime`. Only check divisors up to √n.
+
+**Input:** an integer `n` (1 ≤ n ≤ 10^12).
+**Output:** `Prime` or `Not Prime`.
+
+### Sample Input
+```
+97
+```
+
+### Sample Output
+```
+Prime
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(√n)
+- Space: O(1)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

@@ -1,24 +1,30 @@
-# Day 22: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 22: Armstrong Number
 
 ## Problem Statement
-Add today's problem statement here.
+A number is an Armstrong number if the sum of its digits, each raised to the power of the number of digits, equals the number itself (e.g. 153 = 1³ + 5³ + 3³). Print `Yes` or `No`.
+
+**Input:** an integer `n`.
+**Output:** `Yes` or `No`.
+
+### Sample Input
+```
+153
+```
+
+### Sample Output
+```
+Yes
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(d^2) where d = number of digits
+- Space: O(1)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

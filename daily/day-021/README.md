@@ -1,24 +1,31 @@
-# Day 21: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 21: Reverse a Number and Palindrome Check
 
 ## Problem Statement
-Add today's problem statement here.
+Read a non-negative integer, print its reverse, and on the next line print `Palindrome` if the number equals its reverse, otherwise `Not Palindrome`.
+
+**Input:** an integer `n`.
+**Output:** two lines.
+
+### Sample Input
+```
+12321
+```
+
+### Sample Output
+```
+12321
+Palindrome
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(log n)
+- Space: O(1)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

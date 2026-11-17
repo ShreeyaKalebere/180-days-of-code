@@ -1,24 +1,31 @@
-# Day 12: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 12: Reverse an Array Using Pointers
 
 ## Problem Statement
-Add today's problem statement here.
+Read `n` integers and reverse the array in place using two pointers (`int*`), then print it.
+
+**Input:** `n`, then `n` integers.
+**Output:** the reversed array.
+
+### Sample Input
+```
+5
+1 2 3 4 5
+```
+
+### Sample Output
+```
+5 4 3 2 1
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(n)
+- Space: O(1) extra
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

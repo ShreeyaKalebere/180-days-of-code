@@ -1,24 +1,31 @@
-# Day 37: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 37: Binary Search
 
 ## Problem Statement
-Add today's problem statement here.
+Given a sorted array, find the index (0-based) of `target` using binary search. Print `-1` if not found.
+
+**Input:** `n target`, then `n` sorted integers.
+**Output:** the index.
+
+### Sample Input
+```
+7 23
+2 5 8 12 16 23 38
+```
+
+### Sample Output
+```
+5
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(log n)
+- Space: O(1)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

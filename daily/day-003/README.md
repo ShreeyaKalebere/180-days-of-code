@@ -1,24 +1,30 @@
-# Day 3: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 3: Greeting with Input and Output
 
 ## Problem Statement
-Add today's problem statement here.
+Read a person's first name (one word) and their age. Print `Hello <name>, you are <age> years old.`
+
+**Input:** a word and an integer.
+**Output:** the greeting line.
+
+### Sample Input
+```
+Shreeya 20
+```
+
+### Sample Output
+```
+Hello Shreeya, you are 20 years old.
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(1)
+- Space: O(1)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

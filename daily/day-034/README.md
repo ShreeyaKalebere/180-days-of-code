@@ -1,24 +1,30 @@
-# Day 34: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 34: Valid Anagram
 
 ## Problem Statement
-Add today's problem statement here.
+Check whether two lowercase strings are anagrams of each other (same letters, same counts). Print `true` or `false`.
+
+**Input:** two words.
+**Output:** `true` or `false`.
+
+### Sample Input
+```
+listen silent
+```
+
+### Sample Output
+```
+true
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(n)
+- Space: O(26)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

@@ -1,24 +1,30 @@
-# Day 11: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 11: Count Vowels in a String
 
 ## Problem Statement
-Add today's problem statement here.
+Read a line of text and count how many vowels (`a e i o u`, upper or lower case) it contains.
+
+**Input:** one line of text.
+**Output:** the number of vowels.
+
+### Sample Input
+```
+Hello GitHub World
+```
+
+### Sample Output
+```
+5
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(n)
+- Space: O(1)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

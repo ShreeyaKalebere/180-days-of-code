@@ -1,24 +1,30 @@
-# Day 20: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 20: Binary to Decimal
 
 ## Problem Statement
-Add today's problem statement here.
+Read a binary string and print its decimal value.
+
+**Input:** a string of 0s and 1s (length ≤ 60).
+**Output:** the decimal number.
+
+### Sample Input
+```
+101101
+```
+
+### Sample Output
+```
+45
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(length)
+- Space: O(1)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

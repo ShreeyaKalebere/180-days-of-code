@@ -1,24 +1,30 @@
-# Day 14: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 14: Count and Sum of Digits
 
 ## Problem Statement
-Add today's problem statement here.
+Read a non-negative integer and print how many digits it has and the sum of its digits. Notice this takes O(log n) time, not O(n).
+
+**Input:** an integer `n`.
+**Output:** `digits sum` on one line.
+
+### Sample Input
+```
+90471
+```
+
+### Sample Output
+```
+5 21
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(log10 n)
+- Space: O(1)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!

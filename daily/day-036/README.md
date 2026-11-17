@@ -1,24 +1,31 @@
-# Day 36: C++ and DSA Challenge
-
-## Objective
-Practice C++ and Data Structures and Algorithms.
+# Day 36: Linear Search
 
 ## Problem Statement
-Add today's problem statement here.
+Find the first index (0-based) of `target` in an array. Print `-1` if it is not present.
+
+**Input:** `n target`, then `n` integers.
+**Output:** the index.
+
+### Sample Input
+```
+6 9
+4 2 9 7 9 1
+```
+
+### Sample Output
+```
+2
+```
 
 ## Approach
-Explain your approach here.
+_Explain your approach here._
 
 ## Complexity
-- Time: To be analyzed.
-- Space: To be analyzed.
+- Time: O(n)
+- Space: O(1)
 
 ## Key Learnings
-Record what you learned today.
+_Record what you learned today._
 
-## Completion Checklist
-- [ ] Understand the problem.
-- [ ] Implement the solution.
-- [ ] Compile and test the solution.
-- [ ] Analyze complexity.
-- [ ] Push the solution to GitHub.
+## Status
+🤖 Reference solution added automatically. Come back and solve it yourself!
