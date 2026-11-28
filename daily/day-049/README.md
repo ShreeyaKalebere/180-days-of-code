@@ -29,4 +29,4 @@ _Explain your approach here._
 _Record what you learned today._
 
 ## Status
-⏳ Not solved yet — solve it in `solution.cpp` and push.
+🤖 Reference solution added automatically. Come back and solve it yourself!
